@@ -1,0 +1,15 @@
+README
+
+* UsingPageant.java
+  This sample demonstrates how to get accesses to Pageant.
+  $ (cd ..; ant examples)
+  $ java -classpath "../lib/*:../dist/lib/*":. UsingPageant
+* UsingSSHAent.java
+  This sample demonstrates how to get accesses to ssh-agent.
+  $ (cd ..; ant examples)
+  $ java -classpath "../lib/*:../dist/lib/*":. UsingSSHAgent
+* UsingSSHAent.java
+  This sample demonstrates how to integrate jsch-agent-proxy into JSch.
+  $ (cd ..; ant examples)
+  $ java -classpath "../lib/*:../dist/lib/*":. \
+         JSchWithAgentProxy foo@bar.com)
