@@ -44,3 +44,33 @@ Examples
     $ (cd examples; \
        java -classpath "../lib/*:../dist/lib/*":. \
             JSchWithAgentProxy foo@bar.com)
+
+
+Dependencies
+============
+To work as a proxy to ssh-agent and Pageant,
+this software depends on the following software
+  * JNA: https://github.com/twall/jna
+  * junixsocket: http://code.google.com/p/junixsocket/
+
+As for connections to ssh-agent, unix domain socket must be
+handled, and JNA or junixsocket have been used.  Refer to
+  * com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory[1]
+  * com.jcraft.jsch.agentproxy.usocket.JUnixDomainSocketFactory[2]
+If you can use JAN, the later is not needed.
+
+As for connections to Pageant, win32 APIs on Windows must be
+handled, and JNA has been used.  Refer to
+  * com.jcraft.jsch.agentproxy.connector.PageantConnector[3]
+
+If you don't want to be free from JNA and junixsocket,
+implement followings without them,
+  * com.jcraft.jsch.agentproxy.Connector[4]
+  * com.jcraft.jsch.agentproxy.USocketFactory[5]
+
+[1] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/usocket/JNAUSocketFactory.java
+[2] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/usocket/JUnixDomainSocketFactory.java
+[3] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/connector/PageantConnector.java
+[4] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/Connector.java
+[5] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/USocketFactory.java
+
