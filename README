@@ -63,8 +63,8 @@ As for connections to Pageant, win32 APIs on Windows must be
 handled, and JNA has been used.  Refer to
   * com.jcraft.jsch.agentproxy.connector.PageantConnector[3]
 
-If you don't want to be free from JNA and junixsocket,
-implement followings without them,
+If you want to be free from JNA and junixsocket,
+implement following interfaces without them,
   * com.jcraft.jsch.agentproxy.Connector[4]
   * com.jcraft.jsch.agentproxy.USocketFactory[5]
 
