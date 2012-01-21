@@ -2,12 +2,12 @@ jsch-agent-proxy -- a proxy to ssh-agent and Pageant in Java.
 
 Description
 ===========
-jsch-agent-proxy is a proxy program to OpenSSH's ssh-agent ant Pageant
-included Putty.  It will be easily integrated into JSch and users
-will be able to use those programs in authentications.
+jsch-agent-proxy is a proxy program to OpenSSH's ssh-agent and Pageant
+included Putty.  It will be easily integrated into JSch, and users
+will be allowed to use those programs in authentications.
 This software has been developed for JSch, but it will be easily 
 applicable to other ssh2 implementations in Java.
-jsch-agent-proxy is licensed under BSD style license.
+This software is licensed under BSD style license.
 
 
 Build
@@ -49,18 +49,20 @@ Examples
 Dependencies
 ============
 To work as a proxy to ssh-agent and Pageant,
-this software depends on the following software
+the current implementation depends on the following software
   * JNA: https://github.com/twall/jna
   * junixsocket: http://code.google.com/p/junixsocket/
 
-As for connections to ssh-agent, unix domain socket must be
-handled, and JNA or junixsocket have been used.  Refer to
+As for connections to ssh-agent, unix domain sockets must be
+handled, and JNA or junixsocket have been used.
+Refer to to following classes,
   * com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory[1]
   * com.jcraft.jsch.agentproxy.usocket.JUnixDomainSocketFactory[2]
 If you can use JNA, the later is not needed.
 
 As for connections to Pageant, win32 APIs on Windows must be
-handled, and JNA has been used.  Refer to
+handled, and JNA has been used in the current implementation.
+Refer to the following class,
   * com.jcraft.jsch.agentproxy.connector.PageantConnector[3]
 
 If you want to be free from JNA and junixsocket,
@@ -73,4 +75,3 @@ implement following interfaces without them,
 [3] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/connector/PageantConnector.java
 [4] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/Connector.java
 [5] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/USocketFactory.java
-
