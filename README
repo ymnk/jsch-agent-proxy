@@ -38,7 +38,7 @@ Examples
     This sample demonstrates how to get accesses to ssh-agent.
     $ ant examples
     $ (cd examples; java -classpath "../lib/*:../dist/lib/*":. UsingSSHAgent)
-  * examples/UsingSSHAent.java
+  * examples/JSchWithAgentProxy.java
     This sample demonstrates how to integrate jsch-agent-proxy into JSch.
     $ ant examples
     $ (cd examples; \
@@ -57,7 +57,7 @@ As for connections to ssh-agent, unix domain socket must be
 handled, and JNA or junixsocket have been used.  Refer to
   * com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory[1]
   * com.jcraft.jsch.agentproxy.usocket.JUnixDomainSocketFactory[2]
-If you can use JAN, the later is not needed.
+If you can use JNA, the later is not needed.
 
 As for connections to Pageant, win32 APIs on Windows must be
 handled, and JNA has been used.  Refer to
