@@ -12,17 +12,17 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 
 ## Build from Source
     $ git clone git://github.com/ymnk/jsch-agent-proxy.git
-    $ mkdir jsch-agent-proxy/lib
-    $ (cd jsch-agent-proxy/lib; \
+    $ cd jsch-agent-proxy
+    $ mkdir lib
+    $ (cd lib; \
        wget --no-check-certificate \
           https://github.com/downloads/twall/jna/jna.jar)
-    $ (cd jsch-agent-proxy/lib; \
+    $ (cd lib; \
        wget --no-check-certificate \
           https://github.com/downloads/twall/jna/platform.jar)
-    $ wget http://www.jcraft.com/jsch/jsch-0.1.46-rc1.zip
-    $ unzip jsch-0.1.46-rc1.zip
-    $ (cd jsch-0.1.46; ant; cp dist/lib/jsch*.jar ../jsch-agent-proxy/lib/)
-    $ cd jsch-agent-proxy
+    $ (cd lib; \
+       wget \
+          http://sourceforge.net/projects/jsch/files/jsch.jar/0.1.46/jsch-0.1.46.jar/download)
     $ ant
 
 
