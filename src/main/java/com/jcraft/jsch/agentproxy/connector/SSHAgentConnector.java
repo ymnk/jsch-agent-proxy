@@ -34,10 +34,7 @@ import com.jcraft.jsch.agentproxy.Buffer;
 import com.jcraft.jsch.agentproxy.AgentProxyException;
 import com.jcraft.jsch.agentproxy.USocketFactory;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class SSHAgentConnector implements Connector {
   private USocketFactory factory;

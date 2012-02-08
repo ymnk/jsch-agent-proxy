@@ -41,19 +41,12 @@ import com.sun.jna.Structure;
 
 import com.sun.jna.win32.W32APIOptions;
 
-import com.sun.jna.platform.win32.WinDef.WPARAM;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinBase;
 import com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.platform.win32.WinUser;
-import com.sun.jna.platform.win32.WinDef.WPARAM;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class PageantConnector implements Connector {
 

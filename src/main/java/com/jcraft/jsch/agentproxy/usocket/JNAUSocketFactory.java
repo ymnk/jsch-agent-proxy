@@ -34,13 +34,9 @@ import com.jcraft.jsch.agentproxy.USocketFactory;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.IOException;
 
 public class JNAUSocketFactory implements USocketFactory {

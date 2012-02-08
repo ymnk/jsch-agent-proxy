@@ -29,8 +29,6 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jsch.agentproxy;
 
-import java.io.IOException;
-
 public interface Connector {
   void query(Buffer buffer) throws AgentProxyException;
 }

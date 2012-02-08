@@ -29,11 +29,6 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jsch.agentproxy;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public class AgentProxy {
 
   private static final byte SSH_AGENTC_REQUEST_RSA_IDENTITIES = 1;
@@ -76,7 +71,6 @@ public class AgentProxy {
   private final byte[] buf = new byte[1024];
   private final Buffer buffer = new Buffer(buf);
 
-
   private Connector connector;
 
   public AgentProxy(Connector connector){
@@ -84,7 +78,6 @@ public class AgentProxy {
   }
 
   public Identity[] getIdentities() {
-
     Identity[] identities = null;
 
     byte code1 = SSH2_AGENTC_REQUEST_IDENTITIES;
