@@ -66,6 +66,14 @@ public class PageantConnector implements Connector {
     }
   }
 
+  public String getName(){
+    return "pageant";
+  }
+
+  public boolean isAvailable(){
+    return System.getProperty("os.name").startsWith("Windows");
+  }
+
   public interface User32 extends  com.sun.jna.platform.win32.User32 {
     User32 INSTANCE =
       (User32) Native.loadLibrary("user32",

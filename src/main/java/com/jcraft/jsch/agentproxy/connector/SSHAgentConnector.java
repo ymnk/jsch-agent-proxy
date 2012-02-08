@@ -60,6 +60,14 @@ public class SSHAgentConnector implements Connector {
     }
   }
 
+  public String getName(){
+    return "ssh-agent";
+  }
+
+  public boolean isAvailable(){
+    return System.getenv("SSH_AUTH_SOCK")!=null;
+  }
+
   private USocketFactory.Socket open() throws IOException {
     String ssh_auth_sock = System.getenv("SSH_AUTH_SOCK");
     if(ssh_auth_sock ==null) {
