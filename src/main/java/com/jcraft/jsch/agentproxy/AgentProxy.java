@@ -207,6 +207,25 @@ public class AgentProxy {
     return true;
   }
 
+  public boolean isRunning(){
+    if(!connector.isAvailable())
+      return false;
+
+    byte code1 = SSH2_AGENTC_REQUEST_IDENTITIES;
+
+    buffer.reset();
+    buffer.putByte(code1);
+    buffer.insertLength();
+
+    try {
+      connector.query(buffer);
+    }
+    catch(AgentProxyException e){
+      return false;
+    }
+    return buffer.getByte() == SSH2_AGENT_IDENTITIES_ANSWER;
+  }
+
   // TODO
   public boolean check_reply(int typ) {
     // println("check_reply: "+typ)
