@@ -85,6 +85,7 @@ public class SSHAgentConnector implements Connector {
       int i = sock.readFull(buffer.buffer, 0, 4);  // length
       i = buffer.getInt();
       buffer.rewind();
+      buffer.checkFreeSize(i);
       i = sock.readFull(buffer.buffer, 0, i);
     }
     catch(IOException e){

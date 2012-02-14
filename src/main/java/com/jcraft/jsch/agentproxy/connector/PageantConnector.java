@@ -144,6 +144,7 @@ public class PageantConnector implements Connector {
         sharedMemory.read(0, buffer.buffer, 0, 4); // length
         int i = buffer.getInt();
         buffer.rewind();
+        buffer.checkFreeSize(i);
         sharedMemory.read(4, buffer.buffer, 0, i);
       }
     }

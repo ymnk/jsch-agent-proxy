@@ -213,9 +213,9 @@ public class Buffer{
     return buffer[5];
   }
 
-  void checkFreeSize(int n){
+  public void checkFreeSize(int n){
     if(buffer.length<index+n){
-      byte[] tmp = new byte[buffer.length*2];
+      byte[] tmp = new byte[(index+n)*2];
       System.arraycopy(buffer, 0, tmp, 0, index);
       buffer = tmp;
     }
