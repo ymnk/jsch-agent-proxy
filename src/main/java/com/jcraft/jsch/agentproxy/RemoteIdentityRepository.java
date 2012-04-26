@@ -84,4 +84,17 @@ public class RemoteIdentityRepository implements IdentityRepository {
   public void removeAll() {
     agent.removeAllIdentities();
   }
+
+  public String getName() {
+    return agent.getConnector().getName();
+  }
+
+  public int getStatus() {
+    if(agent.getConnector().isAvailable()){
+      return NOTRUNNING;
+    }
+    else {
+      return RUNNING;
+    }
+  }
 }

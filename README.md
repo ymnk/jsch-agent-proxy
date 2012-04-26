@@ -22,7 +22,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
           https://github.com/downloads/twall/jna/platform.jar)
     $ (cd lib; \
        wget \
-          http://sourceforge.net/projects/jsch/files/jsch.jar/0.1.46/jsch-0.1.46.jar/download)
+          http://sourceforge.net/projects/jsch/files/jsch.jar/0.1.48/jsch-0.1.48.jar)
     $ ant
 
 

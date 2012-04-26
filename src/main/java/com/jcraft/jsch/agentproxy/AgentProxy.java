@@ -226,6 +226,10 @@ public class AgentProxy {
     return buffer.getByte() == SSH2_AGENT_IDENTITIES_ANSWER;
   }
 
+  public Connector getConnector() {
+    return connector;
+  }
+
   // TODO
   public boolean check_reply(int typ) {
     // println("check_reply: "+typ)
