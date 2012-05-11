@@ -70,8 +70,12 @@ public class PageantConnector implements Connector {
     return "pageant";
   }
 
-  public boolean isAvailable(){
+  public static boolean isConnectorAvailable(){
     return System.getProperty("os.name").startsWith("Windows");
+  }
+
+  public boolean isAvailable(){
+    return isConnectorAvailable();
   }
 
   public interface User32 extends  com.sun.jna.platform.win32.User32 {
