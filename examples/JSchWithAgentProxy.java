@@ -17,7 +17,7 @@ public class JSchWithAgentProxy {
       Connector con = null;
 
       try {
-        if(System.getenv("SSH_AUTH_SOCK")!=null){
+        if(SSHAgentConnector.isConnectorAvailable()){
           //USocketFactory usf = new JUnixDomainSocketFactory();
           USocketFactory usf = new JNAUSocketFactory();
           con = new SSHAgentConnector(usf);
@@ -28,7 +28,7 @@ public class JSchWithAgentProxy {
       }
 
       try {
-        if(System.getProperty("os.name").startsWith("Windows"))
+        if(PageantConnector.isConnectorAvailable())
           con = new PageantConnector();
       }
       catch(AgentProxyException e){
