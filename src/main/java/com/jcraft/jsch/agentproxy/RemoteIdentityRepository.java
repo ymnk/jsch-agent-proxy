@@ -62,7 +62,7 @@ public class RemoteIdentityRepository implements IdentityRepository {
         }
         public boolean decrypt() { return true; }
         public String getAlgName() { return algname; }
-        public String getName() { return ""; } 
+        public String getName() { return new String(_identity.getComment()); }
         public boolean isEncrypted() { return false; }
         public void clear() { }
       };
