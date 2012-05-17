@@ -77,7 +77,7 @@ public class AgentProxy {
     this.connector = connector;
   }
 
-  public Identity[] getIdentities() {
+  public synchronized Identity[] getIdentities() {
     Identity[] identities = null;
 
     byte code1 = SSH2_AGENTC_REQUEST_IDENTITIES;
@@ -115,7 +115,7 @@ public class AgentProxy {
     return identities;
   }
 
-  public byte[] sign(byte[] blob, byte[] data) {
+  public synchronized byte[] sign(byte[] blob, byte[] data) {
     byte[] result = null;
 
     byte code1 = SSH2_AGENTC_SIGN_REQUEST;
@@ -147,7 +147,7 @@ public class AgentProxy {
     return result;
   }
 
-  public boolean removeIdentity(byte[] blob) {
+  public synchronized boolean removeIdentity(byte[] blob) {
     byte code1 = SSH2_AGENTC_REMOVE_IDENTITY;
 
     buffer.reset();
@@ -169,7 +169,7 @@ public class AgentProxy {
     return true;
   }
 
-  public void removeAllIdentities() {
+  public synchronized void removeAllIdentities() {
     byte code1 = SSH2_AGENTC_REMOVE_ALL_IDENTITIES;
 
     buffer.reset();
@@ -186,7 +186,7 @@ public class AgentProxy {
     check_reply(buffer.getByte());
   }
 
-  public boolean addIdentity(byte[] identity) {
+  public synchronized boolean addIdentity(byte[] identity) {
     byte code1 = SSH2_AGENTC_ADD_IDENTITY;
 
     buffer.reset();
@@ -207,7 +207,7 @@ public class AgentProxy {
     return true;
   }
 
-  public boolean isRunning(){
+  public synchronized boolean isRunning(){
     if(!connector.isAvailable())
       return false;
 
@@ -226,7 +226,7 @@ public class AgentProxy {
     return buffer.getByte() == SSH2_AGENT_IDENTITIES_ANSWER;
   }
 
-  public Connector getConnector() {
+  public synchronized Connector getConnector() {
     return connector;
   }
 
