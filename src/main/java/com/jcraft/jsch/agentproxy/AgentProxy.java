@@ -1,6 +1,6 @@
 /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /*
-Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
+Copyright (c) 2012 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -231,7 +231,7 @@ public class AgentProxy {
   }
 
   // TODO
-  public boolean check_reply(int typ) {
+  private boolean check_reply(int typ) {
     // println("check_reply: "+typ)
     return true;
   }
