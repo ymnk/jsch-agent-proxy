@@ -1,0 +1,132 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jcraft</groupId>
+  <artifactId>jsch-agent-proxy</artifactId>
+  <packaging>jar</packaging>
+  <version>0.0.4</version>
+  <name>jsch-agent-proxy</name>
+  <url>http://www.jcraft.com/jsch-agent-proxy/</url>
+  <description>a proxy to ssh-agent and Pageant in Java</description>
+  <organization>
+    <name>JCraft,Inc.</name>
+    <url>http://www.jcraft.com/</url>
+  </organization>
+
+  <scm>
+    <connection>scm:git:git://github.com/ymnk/jsch-agent-proxy.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/ymnk/jsch-agent-proxy.git</developerConnection>
+    <url>https://github.com/ymnk/jsch-agent-proxy</url>
+  </scm>
+
+  <developers>
+    <developer>
+    <id>ymnk</id>
+    <name>Atsuhiko Yamanaka</name>
+    <email>ymnk at jcraft D0t com</email>
+    <url>http://github.com/ymnk</url>
+    <organization>JCraft,Inc.</organization>
+    <organizationUrl>http://www.jcraft.com/</organizationUrl>
+    <roles>
+      <role>architect</role>
+      <role>developer</role>
+    </roles>
+    <timezone>+9</timezone>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Revised BSD</name>
+      <url>http://www.jcraft.com/jsch-agent-proxy/LICENSE.txt</url>
+    </license>
+  </licenses>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jsch.version>0.1.48</jsch.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>${jsch.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <excludes>
+            <exclude>**/JUnixDomainSocketFactory.java</exclude>
+            <exclude>**/JNAUSocketFactory.java</exclude>
+            <exclude>**/PageantConnector.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+<!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <excludePackageNames>
+            com.jcraft.jsch.agentproxy.usocket:com.jcraft.jsch.agentproxy.connector
+          </excludePackageNames>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+-->
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh-external</artifactId>
+         <version>1.0-alpha-5</version>
+      </extension>
+    </extensions>
+  </build>
+
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>6</version>
+  </parent>
+
+</project>
