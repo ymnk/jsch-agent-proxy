@@ -15,35 +15,32 @@ Build
 
   $ git clone git://github.com/ymnk/jsch-agent-proxy.git
   $ cd jsch-agent-proxy
-  $ mkdir lib
-  $ (cd lib; \
-     wget --no-check-certificate \
-          https://github.com/downloads/twall/jna/jna.jar)
-  $ (cd lib; \
-     wget --no-check-certificate \
-          https://github.com/downloads/twall/jna/platform.jar)
-  $ (cd lib; \
-     wget \
-          http://sourceforge.net/projects/jsch/files/jsch.jar/0.1.48/jsch-0.1.48.jar)
-  $ ant
-
+  $ mvn package
+  $ mvn install
 
 Examples
 ========
-  * examples/UsingPageant.java
+  * UsingPageant.java
     This sample demonstrates how to get accesses to Pageant.
-    $ ant examples
-    $ (cd examples; java -classpath "../lib/*:../dist/lib/*":. UsingPageant)
-  * examples/UsingSSHAent.java
+    $ cd examples
+    $ mvn compile
+    $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingPagent"
+
+  * UsingSSHAent.java
     This sample demonstrates how to get accesses to ssh-agent.
-    $ ant examples
-    $ (cd examples; java -classpath "../lib/*:../dist/lib/*":. UsingSSHAgent)
-  * examples/JSchWithAgentProxy.java
+    $ cd examples
+    $ mvn compile
+    $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingSSHAgent"
+
+  * UsingSSHAent.java
     This sample demonstrates how to integrate jsch-agent-proxy into JSch.
-    $ ant examples
-    $ (cd examples; \
-       java -classpath "../lib/*:../dist/lib/*":. \
-            JSchWithAgentProxy foo@bar.com)
+    $ cd examples
+    $ mvn compile
+    $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingJSchWithAgentProxy" \
+      -Dexec.args="foo@bar.com"
 
 
 Dependencies
@@ -70,8 +67,8 @@ implement following interfaces without them,
   * com.jcraft.jsch.agentproxy.Connector[4]
   * com.jcraft.jsch.agentproxy.USocketFactory[5]
 
-[1] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/usocket/JNAUSocketFactory.java
-[2] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/usocket/JUnixDomainSocketFactory.java
-[3] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/connector/PageantConnector.java
-[4] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/Connector.java
-[5] https://github.com/ymnk/jsch-agent-proxy/blob/master/src/main/java/com/jcraft/jsch/agentproxy/USocketFactory.java
+[1] https://github.com/ymnk/jsch-agent-proxy/blob/master/jsch-agent-proxy-usocket-jna/src/main/java/com/jcraft/jsch/agentproxy/usocket/JNAUSocketFactory.java
+[2] https://github.com/ymnk/jsch-agent-proxy/blob/master/jsch-agent-proxy-usocket-junixsocket/src/main/java/com/jcraft/jsch/agentproxy/usocket/JUnixDomainSocketFactory.java
+[3] https://github.com/ymnk/jsch-agent-proxy/blob/master/jsch-agent-proxy-pageant/src/main/java/com/jcraft/jsch/agentproxy/connector/PageantConnector.java
+[4] https://github.com/ymnk/jsch-agent-proxy/blob/master/jsch-agent-proxy-sshagent/src/main/java/com/jcraft/jsch/agentproxy/Connector.java
+[5] https://github.com/ymnk/jsch-agent-proxy/blob/master/jsch-agent-proxy-core/src/main/java/com/jcraft/jsch/agentproxy/USocketFactory.java

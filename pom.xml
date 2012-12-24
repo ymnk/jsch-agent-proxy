@@ -1,22 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.jcraft</groupId>
-  <artifactId>jsch-agent-proxy</artifactId>
-  <packaging>jar</packaging>
+
+  <prerequisites>
+    <maven>3.0.0</maven>
+  </prerequisites>
+
+  <groupId>com.jcraft.jsch.agentproxy</groupId>
+  <artifactId>jsch-agent-proxy-parent</artifactId>
   <version>0.0.4</version>
-  <name>jsch-agent-proxy</name>
-  <url>http://www.jcraft.com/jsch-agent-proxy/</url>
-  <description>a proxy to ssh-agent and Pageant in Java</description>
+  <packaging>pom</packaging>
+  <name>jsch-agent-proxy: a parent of modules</name>
+
+  <description>
+    a proxy to ssh-agent and Pageant in Java
+  </description>
+
   <organization>
     <name>JCraft,Inc.</name>
     <url>http://www.jcraft.com/</url>
   </organization>
 
-  <scm>
-    <connection>scm:git:git://github.com/ymnk/jsch-agent-proxy.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/ymnk/jsch-agent-proxy.git</developerConnection>
-    <url>https://github.com/ymnk/jsch-agent-proxy</url>
-  </scm>
+  <url>http://www.jcraft.com/jsch-agent-proxy/</url>
+
+  <modules>
+    <module>jsch-agent-proxy-core</module>
+    <module>jsch-agent-proxy-jsch</module>
+    <module>jsch-agent-proxy-pageant</module>
+    <module>jsch-agent-proxy-sshagent</module>
+    <module>jsch-agent-proxy-usocket-jna</module>
+<!--
+    <module>jsch-agent-proxy-usocket-junixsocket</module>
+-->
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <jsch.version>0.1.49</jsch.version>
+    <jna.version>3.4.0</jna.version>
+  </properties>
 
   <developers>
     <developer>
@@ -41,35 +65,14 @@
     </license>
   </licenses>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jsch.version>0.1.48</jsch.version>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch</artifactId>
-      <version>${jsch.version}</version>
-    </dependency>
-  </dependencies>
+  <scm>
+    <connection>scm:git:git://github.com/ymnk/jsch-agent-proxy.git</connection>
+    <developerConnection>scm:git:git@github.com:ymnk/jsch-agent-proxy.git</developerConnection>
+    <url>http://github.com/ymnk/jsch-agent-proxy/</url>
+  </scm>
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <excludes>
-            <exclude>**/JUnixDomainSocketFactory.java</exclude>
-            <exclude>**/JNAUSocketFactory.java</exclude>
-            <exclude>**/PageantConnector.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -84,12 +87,16 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
         <configuration>
-          <excludePackageNames>
-            com.jcraft.jsch.agentproxy.usocket:com.jcraft.jsch.agentproxy.connector
-          </excludePackageNames>
+          <source>1.5</source>
+          <target>1.5</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -99,6 +106,7 @@
           </execution>
         </executions>
       </plugin>
+<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
@@ -113,6 +121,12 @@
         </executions>
       </plugin>
 -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.3.7</version>
+        <extensions>true</extensions>
+      </plugin>
     </plugins>
     <extensions>
       <extension>
@@ -128,5 +142,4 @@
     <artifactId>oss-parent</artifactId>
     <version>6</version>
   </parent>
-
 </project>

@@ -2,14 +2,22 @@ README
 
 * UsingPageant.java
   This sample demonstrates how to get accesses to Pageant.
-  $ (cd ..; ant examples)
-  $ java -classpath "../lib/*:../dist/lib/*":. UsingPageant
+  $ cd examples
+  $ mvn compile
+  $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingPagent"
+
 * UsingSSHAent.java
   This sample demonstrates how to get accesses to ssh-agent.
-  $ (cd ..; ant examples)
-  $ java -classpath "../lib/*:../dist/lib/*":. UsingSSHAgent
+  $ cd examples
+  $ mvn compile
+  $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingSSHAgent"
+
 * UsingSSHAent.java
   This sample demonstrates how to integrate jsch-agent-proxy into JSch.
-  $ (cd ..; ant examples)
-  $ java -classpath "../lib/*:../dist/lib/*":. \
-         JSchWithAgentProxy foo@bar.com)
+  $ cd examples
+  $ mvn compile
+  $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingJSchWithAgentProxy" \
+      -Dexec.args="foo@bar.com"
