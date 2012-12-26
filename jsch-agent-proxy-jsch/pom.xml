@@ -11,7 +11,6 @@
 
   <artifactId>jsch-agent-proxy-jsch</artifactId>
   <name>a library to use jsch-agent-proxy with JSch</name>
-  <packaging>bundle</packaging>
 
   <dependencies>
     <dependency>
