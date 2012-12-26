@@ -91,10 +91,10 @@ public class RemoteIdentityRepository implements IdentityRepository {
 
   public int getStatus() {
     if(agent.getConnector().isAvailable()){
-      return NOTRUNNING;
+      return RUNNING;
     }
     else {
-      return RUNNING;
+      return NOTRUNNING;
     }
   }
 }
