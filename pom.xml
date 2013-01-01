@@ -33,6 +33,7 @@
 <!--
     <module>jsch-agent-proxy-usocket-junixsocket</module>
 -->
+    <module>jsch-agent-proxy-usocket-nc</module>
   </modules>
 
   <properties>

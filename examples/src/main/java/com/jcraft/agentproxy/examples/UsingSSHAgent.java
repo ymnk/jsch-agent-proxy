@@ -13,6 +13,7 @@ public class UsingSSHAgent {
 
     try{
       //USocketFactory udsf = new JUnixDomainSocketFactory();
+      //USocketFactory udsf = new NCUSocketFactory();
       USocketFactory udsf = new JNAUSocketFactory();
       AgentProxy ap = new AgentProxy(new SSHAgentConnector(udsf));
 
