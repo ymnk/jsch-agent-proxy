@@ -39,6 +39,36 @@ import java.io.IOException;
 public class NCUSocketFactory implements USocketFactory {
 
   public NCUSocketFactory() throws AgentProxyException {
+    Process p = null;
+    StringBuilder sb = new StringBuilder();
+    try {
+      p = Runtime.getRuntime().exec("nc -h");
+      InputStream is = p.getErrorStream();
+      byte[] buf = new byte[1024];
+      int i = 0;
+      while((i = is.read(buf, 0, buf.length))>0){
+        sb.append(new String(buf, 0, i));
+      }
+    }
+    catch(IOException e){
+    }
+    finally {
+      try {
+        if(p != null) {
+          p.getErrorStream().close();
+          p.getOutputStream().close();
+          p.getInputStream().close();
+          p.destroy();
+        }
+      }
+      catch(IOException e){
+      }
+    }
+
+    String result = sb.toString();
+    if(result.indexOf("-U") == -1){
+      throw new AgentProxyException("netcat does not support -U option.");
+    }
   }
 
   public class MySocket extends Socket {
