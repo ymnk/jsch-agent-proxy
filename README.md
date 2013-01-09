@@ -17,7 +17,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
     $ mvn install
 
 ## Examples
-+ [UsingPageant.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/jsch/agentproxy/examples/UsingPageant.java)  
++ [UsingPageant.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/agentproxy/examples/UsingPageant.java)  
     This sample demonstrates how to get accesses to Pageant. 
  
 		$ cd examples
@@ -25,7 +25,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		$ mvn exec:java \
 		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingPageant"
 
-+ [UsingSSHAent.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/com/jcraft/jsch/agentproxy/examples/UsingSSHAgent.java)  
++ [UsingSSHAent.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/agentproxy/examples/UsingSSHAgent.java)  
     This sample demonstrates how to get accesses to ssh-agent.  
 
 		$ cd examples
@@ -33,7 +33,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		$ mvn exec:java \
 		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingSSHAgent"
 
-+ [JSchWithAgentProxy.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/com/jcraft/jsch/agentproxy/examples/JSchWithAgentProxy.java)  
++ [JSchWithAgentProxy.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/agentproxy/examples/JSchWithAgentProxy.java)  
     This sample demonstrates how to integrate jsch-agent-proxy into JSch.  
 
 		$ cd examples
