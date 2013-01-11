@@ -7,8 +7,8 @@
     <maven>3.0.0</maven>
   </prerequisites>
 
-  <groupId>com.jcraft.jsch.agentproxy</groupId>
-  <artifactId>jsch-agent-proxy-parent</artifactId>
+  <groupId>com.jcraft</groupId>
+  <artifactId>jsch.agentproxy</artifactId>
   <version>0.0.4</version>
   <packaging>pom</packaging>
   <name>jsch-agent-proxy: a parent of modules</name>

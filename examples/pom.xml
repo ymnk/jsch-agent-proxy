@@ -3,41 +3,41 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.jcraft.jsch.agentproxy</groupId>
-  <artifactId>examples</artifactId>
+  <groupId>com.jcraft</groupId>
+  <artifactId>jsch.agentproxy.examples</artifactId>
   <version>0.0.4</version>
   <name>examples to demonstrate how to use jsch-agent-proxy</name>
 
   <dependencies>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-core</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-jsch</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.jsch</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-pageant</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.pageant</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-sshagent</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.sshagent</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-usocket-jna</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.usocket-jna</artifactId>
       <version>${project.version}</version>
     </dependency>
 <!--
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-usocket-junixsocket</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.usocket-junixsocket</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -47,8 +47,8 @@
     </dependency>
 -->
     <dependency>
-      <groupId>com.jcraft.jsch.agentproxy</groupId>
-      <artifactId>jsch-agent-proxy-usocket-nc</artifactId>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.usocket-nc</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
