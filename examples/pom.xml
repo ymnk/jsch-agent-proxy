@@ -21,6 +21,11 @@
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.sshj</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
       <artifactId>jsch.agentproxy.pageant</artifactId>
       <version>${project.version}</version>
     </dependency>
