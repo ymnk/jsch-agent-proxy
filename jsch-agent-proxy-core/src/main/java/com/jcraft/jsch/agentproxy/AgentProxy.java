@@ -121,7 +121,9 @@ public class AgentProxy {
     byte code1 = SSH2_AGENTC_SIGN_REQUEST;
     byte code2 = SSH2_AGENT_SIGN_RESPONSE;
 
+    int required_size = 1 + 4*4 + blob.length + data.length;
     buffer.reset();
+    buffer.checkFreeSize(required_size);
     buffer.putByte(code1);
     buffer.putString(blob);
     buffer.putString(data);
@@ -150,7 +152,9 @@ public class AgentProxy {
   public synchronized boolean removeIdentity(byte[] blob) {
     byte code1 = SSH2_AGENTC_REMOVE_IDENTITY;
 
+    int required_size = 1 + 4*2 + blob.length;
     buffer.reset();
+    buffer.checkFreeSize(required_size);
     buffer.putByte(code1);
     buffer.putString(blob);
     buffer.insertLength();
@@ -189,7 +193,9 @@ public class AgentProxy {
   public synchronized boolean addIdentity(byte[] identity) {
     byte code1 = SSH2_AGENTC_ADD_IDENTITY;
 
+    int required_size = 1 + 4 + identity.length;
     buffer.reset();
+    buffer.checkFreeSize(required_size);
     buffer.putByte(code1);
     buffer.putByte(identity);
     buffer.insertLength();
