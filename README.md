@@ -39,7 +39,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		$ cd examples
 		$ mvn compile
 		$ mvn exec:java \
-		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingJSchWithAgentProxy" \
+		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.JSchWithAgentProxy" \
 		  -Dexec.args="foo@bar.com"
 
 ## Dependencies

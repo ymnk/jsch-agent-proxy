@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.jcraft</groupId>
     <artifactId>jsch.agentproxy</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
   </parent>
 
   <artifactId>jsch.agentproxy.usocket-jna</artifactId>
