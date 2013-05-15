@@ -42,6 +42,15 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.JSchWithAgentProxy" \
 		  -Dexec.args="foo@bar.com"
 
++ [SshjWithAgentProxy.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/agentproxy/examples/SshjWithAgentProxy.java)  
+    This sample demonstrates how to integrate jsch-agent-proxy into JSch.  
+
+		$ cd examples
+		$ mvn compile
+		$ mvn exec:java \
+		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.SshjWithAgentProxy" \
+		  -Dexec.args="foo@bar.com"
+
 ## Dependencies
 To work as a proxy to ssh-agent and Pageant,
 the current implementation depends on the following software,

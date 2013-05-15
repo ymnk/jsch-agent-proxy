@@ -27,6 +27,7 @@
   <modules>
     <module>jsch-agent-proxy-core</module>
     <module>jsch-agent-proxy-jsch</module>
+    <module>jsch-agent-proxy-sshj</module>
     <module>jsch-agent-proxy-pageant</module>
     <module>jsch-agent-proxy-sshagent</module>
     <module>jsch-agent-proxy-usocket-jna</module>
