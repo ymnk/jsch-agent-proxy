@@ -27,6 +27,8 @@
   <modules>
     <module>jsch-agent-proxy-core</module>
     <module>jsch-agent-proxy-jsch</module>
+    <module>jsch-agent-proxy-svnkit-trilead-ssh2</module>
+    <module>jsch-agent-proxy-svnkit-trilead-ssh2-thick</module>
     <module>jsch-agent-proxy-pageant</module>
     <module>jsch-agent-proxy-sshagent</module>
     <module>jsch-agent-proxy-usocket-jna</module>
@@ -41,6 +43,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jsch.version>0.1.49</jsch.version>
     <jna.version>3.4.0</jna.version>
+
+    <!-- must have svnkit-trilead-ssh2--agent-interface.patch applied -->
+    <trilead.version>1.0.0-build217-SNAPSHOT</trilead.version>
   </properties>
 
   <developers>
