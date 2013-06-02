@@ -21,11 +21,6 @@
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.sshj</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.jcraft</groupId>
       <artifactId>jsch.agentproxy.pageant</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -56,7 +51,32 @@
       <artifactId>jsch.agentproxy.usocket-nc</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.sshj</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.trilead</groupId>
+      <artifactId>trilead-ssh2</artifactId>
+      <version>1.0.0-build217</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.svnkit-trilead-ssh2</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
+
+  <!-- ...for case where dependencies are not yet mirrored to Central... -->
+  <repositories>
+    <repository>
+      <id>tmatesoft-releases</id>
+      <url>http://maven.tmatesoft.com/content/repositories/releases/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>

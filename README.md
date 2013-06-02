@@ -43,13 +43,22 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		  -Dexec.args="foo@bar.com"
 
 + [SshjWithAgentProxy.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/agentproxy/examples/SshjWithAgentProxy.java)  
-    This sample demonstrates how to integrate jsch-agent-proxy into JSch.  
+    This sample demonstrates how to integrate jsch-agent-proxy into sshj.  
 
 		$ cd examples
 		$ mvn compile
 		$ mvn exec:java \
 		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.SshjWithAgentProxy" \
 		  -Dexec.args="foo@bar.com"
+
++ [TrileadWithAgentProxy.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/agentproxy/examples/TrileadWithAgentProxy.java)  
+    This sample demonstrates how to integrate jsch-agent-proxy into Trilead SSH2 (SVNKit fork).  
+
+		$ cd examples
+		$ mvn compile
+		$ mvn exec:java \
+		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.TrileadWithAgentProxy" \
+		  -Dexec.args="foo@bar.com date"
 
 ## Dependencies
 To work as a proxy to ssh-agent and Pageant,
