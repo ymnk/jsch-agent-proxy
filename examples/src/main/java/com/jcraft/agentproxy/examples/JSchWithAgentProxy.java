@@ -2,9 +2,10 @@
 package com.jcraft.jsch.agentproxy.examples;
 
 import com.jcraft.jsch.*;
-import com.jcraft.jsch.agentproxy.*;
-import com.jcraft.jsch.agentproxy.usocket.*;
-import com.jcraft.jsch.agentproxy.connector.*;
+import com.jcraft.jsch.agentproxy.Connector;
+import com.jcraft.jsch.agentproxy.AgentProxyException;
+import com.jcraft.jsch.agentproxy.RemoteIdentityRepository;
+import com.jcraft.jsch.agentproxy.ConnectorFactory;
 import java.io.*;
 import javax.swing.*; 
 
@@ -19,19 +20,8 @@ public class JSchWithAgentProxy {
       Connector con = null;
 
       try {
-        if(SSHAgentConnector.isConnectorAvailable()){
-          //USocketFactory usf = new JUnixDomainSocketFactory();
-          USocketFactory usf = new JNAUSocketFactory();
-          con = new SSHAgentConnector(usf);
-        }
-      }
-      catch(AgentProxyException e){
-        System.out.println(e);
-      }
-
-      try {
-        if(PageantConnector.isConnectorAvailable())
-          con = new PageantConnector();
+        ConnectorFactory cf = ConnectorFactory.getDefault();
+        con = cf.createConnector();
       }
       catch(AgentProxyException e){
         System.out.println(e);
