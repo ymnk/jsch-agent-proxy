@@ -43,9 +43,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jsch.version>0.1.49</jsch.version>
     <jna.version>3.4.0</jna.version>
-
-    <!-- must have svnkit-trilead-ssh2--agent-interface.patch applied -->
-    <trilead.version>1.0.0-build217-SNAPSHOT</trilead.version>
+    <trilead.version>1.0.0-build217</trilead.version>
   </properties>
 
   <developers>
