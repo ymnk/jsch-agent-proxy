@@ -77,10 +77,10 @@ public abstract class ConnectorFactory {
       else if(_connectors[i].trim().equals("ssh-agent")) {
         if(!SSHAgentConnector.isConnectorAvailable())
           continue;
-        String[] _usocketFactories = usocketFactories.split(",");
 
+        String[] _usocketFactories = usocketFactories.split(",");
         for(int j = 0; j < _usocketFactories.length; j++) {
-          if(_usocketFactories[i].trim().equals("nc")) {
+          if(_usocketFactories[j].trim().equals("nc")) {
             try {
               USocketFactory usf = new NCUSocketFactory();
               return new SSHAgentConnector(usf);
@@ -89,7 +89,7 @@ public abstract class ConnectorFactory {
               trials.add("ssh-agent:nc");
             }
           }
-          else if(_usocketFactories[i].trim().equals("jna")) {
+          else if(_usocketFactories[j].trim().equals("jna")) {
             try {
               USocketFactory usf = new JNAUSocketFactory();
               return new SSHAgentConnector(usf);
@@ -123,7 +123,7 @@ public abstract class ConnectorFactory {
           setPreferredConnectors("ssh-agent");
         }
         /*
-        // NetBSD's nc must be available since Tiger
+        // NetBSD's nc must be available since Mac OS X Tiger.
         if(osName.startsWith("Mac")){
           setUSocketFactories("nc");
         }
