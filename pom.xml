@@ -28,7 +28,6 @@
     <module>jsch-agent-proxy-core</module>
     <module>jsch-agent-proxy-jsch</module>
     <module>jsch-agent-proxy-svnkit-trilead-ssh2</module>
-    <module>jsch-agent-proxy-svnkit-trilead-ssh2-thick</module>
     <module>jsch-agent-proxy-pageant</module>
     <module>jsch-agent-proxy-sshagent</module>
     <module>jsch-agent-proxy-usocket-jna</module>
