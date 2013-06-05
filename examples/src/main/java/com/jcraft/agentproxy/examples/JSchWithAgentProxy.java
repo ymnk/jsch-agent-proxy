@@ -2,10 +2,15 @@
 package com.jcraft.jsch.agentproxy.examples;
 
 import com.jcraft.jsch.*;
-import com.jcraft.jsch.agentproxy.*;
-import com.jcraft.jsch.agentproxy.usocket.*;
-import com.jcraft.jsch.agentproxy.connector.*;
-import java.io.*;
+import com.jcraft.jsch.agentproxy.AgentProxyException;
+import com.jcraft.jsch.agentproxy.Connector;
+import com.jcraft.jsch.agentproxy.RemoteIdentityRepository;
+import com.jcraft.jsch.agentproxy.USocketFactory;
+import com.jcraft.jsch.agentproxy.connector.PageantConnector;
+import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
+import com.jcraft.jsch.agentproxy.simple.ConnectorFactory;
+import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
+
 import javax.swing.*; 
 
 public class JSchWithAgentProxy {
@@ -18,6 +23,7 @@ public class JSchWithAgentProxy {
 
       Connector con = null;
 
+      /* The manual way to get a connector: */
       try {
         if(SSHAgentConnector.isConnectorAvailable()){
           //USocketFactory usf = new JUnixDomainSocketFactory();
@@ -37,6 +43,10 @@ public class JSchWithAgentProxy {
         System.out.println(e);
       }
 
+      /* ...or, the one-size-fits-all (reduced control) way: */
+      con = ConnectorFactory.getConnector();
+
+      /* Usage is the same in either event */
       if(con != null ){
         IdentityRepository irepo = new RemoteIdentityRepository(con);
         jsch.setIdentityRepository(irepo);
