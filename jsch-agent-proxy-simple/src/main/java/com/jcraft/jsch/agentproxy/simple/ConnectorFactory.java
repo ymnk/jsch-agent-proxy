@@ -6,6 +6,7 @@ import com.jcraft.jsch.agentproxy.USocketFactory;
 import com.jcraft.jsch.agentproxy.connector.PageantConnector;
 import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
+import com.jcraft.jsch.agentproxy.usocket.NCUSocketFactory;
 
 public class ConnectorFactory {
     /** Try the currently recommended methods to retrieve an agent connector.
@@ -19,17 +20,25 @@ public class ConnectorFactory {
      * @return A usable SSH agent connector, or null if none is available.
      */
     public static Connector getConnector() {
+        /* First choice is Pageant */
         try {
-            Connector con = null;
-            if(SSHAgentConnector.isConnectorAvailable()) {
-                USocketFactory usf = new JNAUSocketFactory();
-                con = new SSHAgentConnector(usf);
-            } else if(PageantConnector.isConnectorAvailable()) {
-                con = new PageantConnector();
+            if(PageantConnector.isConnectorAvailable()) {
+                return new PageantConnector();
             }
-            return con;
-        } catch(AgentProxyException e) {
-            return null;
+        } catch(AgentProxyException e) {}
+        /* Second choice is UNIX-style */
+        if(SSHAgentConnector.isConnectorAvailable()) {
+            /* ...first try JNA... */
+            try {
+                USocketFactory usf = new JNAUSocketFactory();
+                return new SSHAgentConnector(usf);
+            } catch(AgentProxyException e) {}
+            /* ...fall back to running nc (for Cygwin) */
+            try {
+                USocketFactory usf = new NCUSocketFactory();
+                return new SSHAgentConnector(usf);
+            } catch(AgentProxyException e) {}
         }
+        return null;
     }
 }
