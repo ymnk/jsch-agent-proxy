@@ -3,10 +3,7 @@ package com.jcraft.jsch.agentproxy.examples;
 import com.jcraft.jsch.agentproxy.AgentProxyException;
 import com.jcraft.jsch.agentproxy.Connector;
 import com.jcraft.jsch.agentproxy.TrileadAgentProxy;
-import com.jcraft.jsch.agentproxy.USocketFactory;
-import com.jcraft.jsch.agentproxy.connector.PageantConnector;
-import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
-import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
+import com.jcraft.jsch.agentproxy.simple.ConnectorFactory;
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.StreamGobbler;
@@ -32,18 +29,13 @@ public class TrileadWithAgentProxy {
         String user = arg[0].substring(0, splitPoint);
         String host = arg[0].substring(splitPoint + 1);
 
-        Connector con;
-        if(SSHAgentConnector.isConnectorAvailable()) {
-            USocketFactory usf = new JNAUSocketFactory();
-            con = new SSHAgentConnector(usf);
-        } else if(PageantConnector.isConnectorAvailable()) {
-            con = new PageantConnector();
-        } else {
-            System.err.println("ERROR: Unable to connect to SSH agent");
+        Connector agentConnector = ConnectorFactory.getConnector();
+        if(agentConnector == null) {
+            System.err.println("ERROR: Unable to connect to agent");
             System.exit(1);
-            return; /* compiler does not recognize System.exit as terminating */
+            return;
         }
-        AgentProxy agentProxy = new TrileadAgentProxy(con);
+        AgentProxy agentProxy = new TrileadAgentProxy(agentConnector);
 
         Connection conn = new Connection(host);
         conn.connect();

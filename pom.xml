@@ -26,6 +26,7 @@
 
   <modules>
     <module>jsch-agent-proxy-core</module>
+    <module>jsch-agent-proxy-simple</module>
     <module>jsch-agent-proxy-jsch</module>
     <module>jsch-agent-proxy-svnkit-trilead-ssh2</module>
     <module>jsch-agent-proxy-pageant</module>
