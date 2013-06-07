@@ -43,7 +43,7 @@ public abstract class ConnectorFactory {
   protected String connectors = "pageant,ssh-agent";
   protected String usocketFactories = "nc,jna";
 
-  public void setPreferredConnectors(String usocketFactories){
+  public void setPreferredConnectors(String connectors) {
     this.connectors = connectors;
   }
 
