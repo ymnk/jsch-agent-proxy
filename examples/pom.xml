@@ -56,6 +56,11 @@
       <artifactId>jsch.agentproxy.usocket-nc</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch.agentproxy.connector-factory</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
