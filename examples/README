@@ -29,3 +29,12 @@ README
   $ mvn exec:java \
       -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.SshjWithAgentProxy" \
       -Dexec.args="foo@bar.com"
+
+* TrileadWithAgentProxy.java
+  This sample demonstrates how to integrate jsch-agent-proxy into Trilead SSH2 (SVNKit fork).
+  $ cd examples
+  $ mvn compile
+  $ mvn exec:java \
+      -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.TrileadWithAgentProxy" \
+      -Dexec.args="foo@bar.com date"
+

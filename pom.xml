@@ -36,6 +36,7 @@
     <module>jsch-agent-proxy-usocket-junixsocket</module>
 -->
     <module>jsch-agent-proxy-usocket-nc</module>
+    <module>jsch-agent-proxy-svnkit-trilead-ssh2</module>
   </modules>
 
   <properties>
@@ -43,6 +44,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jsch.version>0.1.49</jsch.version>
     <jna.version>3.4.0</jna.version>
+    <trilead.version>1.0.0-build217</trilead.version>
   </properties>
 
   <developers>
