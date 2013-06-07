@@ -112,9 +112,10 @@ public class JNAUSocketFactory implements USocketFactory {
       throw new IOException("failed to allocate usocket");
     }
 
-    if(CLibrary.INSTANCE.fcntl(sock,  2, 8) < 0){
+    int foo = CLibrary.INSTANCE.fcntl(sock, 2, 8);
+    if(foo < 0){
       CLibrary.INSTANCE.close(sock);
-      throw new IOException("failed to fctrl usocket");
+      throw new IOException("failed to fctrl usocket: "+foo);
     }
 
     SockAddr sockaddr = new SockAddr();
@@ -125,8 +126,10 @@ public class JNAUSocketFactory implements USocketFactory {
                      path.length());
     sockaddr.write();
 
-    if(CLibrary.INSTANCE.connect(sock, sockaddr.getPointer(), 110)<0){
-      throw new IOException("failed to fctrl usocket");
+    foo = 
+      CLibrary.INSTANCE.connect(sock, sockaddr.getPointer(), sockaddr.size());
+    if(foo < 0){
+      throw new IOException("failed to fctrl usocket: "+foo);
     }
 
     return new MySocket(sock);
