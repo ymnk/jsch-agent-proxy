@@ -104,8 +104,8 @@ public abstract class ConnectorFactory {
 
     String message = "connector is not available: ";
     String foo = "";
-    for(String s : trials){
-      message += (foo + s);
+    for(int i = 0; i < trials.size(); i++){ 
+      message += (foo + trials.get(i));
       foo = ",";
     }
     throw new AgentProxyException(message);
