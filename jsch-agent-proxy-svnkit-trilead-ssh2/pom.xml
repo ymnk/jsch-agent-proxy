@@ -25,16 +25,6 @@
     </dependency>
   </dependencies>
 
-  <!-- ...for case where dependencies are not yet mirrored to Central... -->
-  <repositories>
-    <repository>
-      <id>tmatesoft-releases</id>
-      <url>http://maven.tmatesoft.com/content/repositories/releases/</url>
-      <releases><enabled>true</enabled></releases>
-      <snapshots><enabled>false</enabled></snapshots>
-    </repository>
-  </repositories>
-
   <build>
     <plugins>
       <plugin>
