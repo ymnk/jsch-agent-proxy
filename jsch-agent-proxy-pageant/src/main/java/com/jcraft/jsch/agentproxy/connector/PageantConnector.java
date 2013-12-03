@@ -29,6 +29,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jsch.agentproxy.connector;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.jcraft.jsch.agentproxy.Connector;
 import com.jcraft.jsch.agentproxy.AgentProxyException;
 import com.jcraft.jsch.agentproxy.Buffer;
@@ -90,12 +93,22 @@ public class PageantConnector implements Connector {
     public int dwData;
     public int cbData;
     public Pointer lpData;
+
+    @Override
+    protected List<String> getFieldOrder() {
+        return Arrays.asList(new String[] {"dwData", "cbData", "lpData"});
+    }
   }
 
   public class COPYDATASTRUCT64 extends Structure {
     public int dwData;
     public long cbData;
     public Pointer lpData;
+
+    @Override
+    protected List<String> getFieldOrder() {
+        return Arrays.asList(new String[] {"dwData", "cbData", "lpData"});
+    }
   }
 
   public void query(Buffer buffer) throws AgentProxyException {
