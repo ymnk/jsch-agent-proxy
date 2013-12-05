@@ -48,6 +48,9 @@ import com.sun.jna.platform.win32.WinBase.SECURITY_ATTRIBUTES;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PageantConnector implements Connector {
 
   private User32 libU = null;
@@ -90,12 +93,20 @@ public class PageantConnector implements Connector {
     public int dwData;
     public int cbData;
     public Pointer lpData;
+
+    protected List getFieldOrder() {
+      return Arrays.asList(new String[] { "dwData", "cbData", "lpData" });
+    }
   }
 
   public class COPYDATASTRUCT64 extends Structure {
     public int dwData;
     public long cbData;
     public Pointer lpData;
+
+    protected List getFieldOrder() {
+      return Arrays.asList(new String[] { "dwData", "cbData", "lpData" });
+    }
   }
 
   public void query(Buffer buffer) throws AgentProxyException {

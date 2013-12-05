@@ -38,6 +38,8 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class JNAUSocketFactory implements USocketFactory {
 
@@ -54,6 +56,10 @@ public class JNAUSocketFactory implements USocketFactory {
   public static class SockAddr extends Structure {
     public short sun_family;
     public byte[] sun_path;
+
+    protected List getFieldOrder() {
+      return Arrays.asList(new String[] { "sun_family", "sun_path" });
+    }
   }
 
   public JNAUSocketFactory() throws AgentProxyException {
