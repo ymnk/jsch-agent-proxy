@@ -9,7 +9,7 @@
 
   <groupId>com.jcraft</groupId>
   <artifactId>jsch.agentproxy</artifactId>
-  <version>0.0.7</version>
+  <version>0.0.8</version>
   <packaging>pom</packaging>
   <name>jsch-agent-proxy: a parent of modules</name>
 
