@@ -36,12 +36,14 @@ import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
 import com.jcraft.jsch.agentproxy.connector.PageantConnector;
 import com.jcraft.jsch.agentproxy.usocket.NCUSocketFactory;
 import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
+
 import java.util.ArrayList;
 
 public abstract class ConnectorFactory {
 
   protected String connectors = "pageant,ssh-agent";
   protected String usocketFactories = "nc,jna";
+  protected String socketPath;
 
   public void setPreferredConnectors(String connectors) {
     this.connectors = connectors;
@@ -50,8 +52,16 @@ public abstract class ConnectorFactory {
   public String getPreferredConnectors() {
     return connectors;
   }
+  
+  public void setSocketPath(String socketPath) {
+    this.socketPath = socketPath;
+  }
 
-  public void setPreferredUSocketFactories(String usocketFactories){
+  public String getSocketPath() {
+    return this.socketPath;
+  }
+
+  public void setPreferredUSocketFactories(String usocketFactories) {
     this.usocketFactories = usocketFactories;
   }
 
@@ -63,40 +73,41 @@ public abstract class ConnectorFactory {
     ArrayList<String> trials = new ArrayList<String>();
 
     String[] _connectors = connectors.split(",");
-    for(int i = 0; i < _connectors.length; i++) {
-      if(_connectors[i].trim().equals("pageant")) {
-        if(PageantConnector.isConnectorAvailable()) {
-          try {
+    for(int i = 0; i < _connectors.length; i++){
+      if(_connectors[i].trim().equals("pageant")){
+        if(PageantConnector.isConnectorAvailable()){
+          try{
             return new PageantConnector();
-          }
-          catch(AgentProxyException e){
+          }catch(AgentProxyException e){
             trials.add("pageant");
           }
         }
-      }
-      else if(_connectors[i].trim().equals("ssh-agent")) {
-        if(!SSHAgentConnector.isConnectorAvailable())
-          continue;
-
+      }else if(_connectors[i].trim().equals("ssh-agent")){
         String[] _usocketFactories = usocketFactories.split(",");
-        for(int j = 0; j < _usocketFactories.length; j++) {
-          if(_usocketFactories[j].trim().equals("nc")) {
-            try {
-              USocketFactory usf = new NCUSocketFactory();
-              return new SSHAgentConnector(usf);
-            }
-            catch(AgentProxyException e){
+        for(int j = 0; j < _usocketFactories.length; j++){
+          USocketFactory usf = null;
+          if(_usocketFactories[j].trim().equals("nc")){
+            try{
+              new NCUSocketFactory();
+            } catch(AgentProxyException e){
               trials.add("ssh-agent:nc");
             }
-          }
-          else if(_usocketFactories[j].trim().equals("jna")) {
-            try {
-              USocketFactory usf = new JNAUSocketFactory();
-              return new SSHAgentConnector(usf);
-            }
-            catch(AgentProxyException e){
+          }else if(_usocketFactories[j].trim().equals("jna")){
+            try{
+              usf = new JNAUSocketFactory();
+            } catch(AgentProxyException e){
               trials.add("ssh-agent:jna");
             }
+          }
+
+          if(usf != null){
+            SSHAgentConnector agentConn;
+            if(null != socketPath){
+              agentConn = new SSHAgentConnector(usf, socketPath);
+            } else{
+              agentConn = new SSHAgentConnector(usf);
+            }
+            return agentConn;
           }
         }
       }
@@ -104,7 +115,7 @@ public abstract class ConnectorFactory {
 
     String message = "connector is not available: ";
     String foo = "";
-    for(int i = 0; i < trials.size(); i++){ 
+    for(int i = 0; i < trials.size(); i++) {
       message += (foo + trials.get(i));
       foo = ",";
     }

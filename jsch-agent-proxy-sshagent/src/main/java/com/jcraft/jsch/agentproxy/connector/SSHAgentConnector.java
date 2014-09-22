@@ -38,17 +38,24 @@ import java.io.IOException;
 
 public class SSHAgentConnector implements Connector {
   private USocketFactory factory;
+  private String socketPath;
 
   public SSHAgentConnector(USocketFactory factory) throws AgentProxyException {
+    this(factory, null);
+  }
+
+  public SSHAgentConnector(USocketFactory factory, String socketPath)
+      throws AgentProxyException {
     this.factory = factory;
+    this.socketPath = socketPath;
 
     // checking if factory is really functional.
     USocketFactory.Socket sock = null;
     try {
       sock = open();
     }
-    catch(IOException e){ throw new AgentProxyException(e.toString()); }
-    catch(Exception e){ throw new AgentProxyException(e.toString()); }
+    catch(IOException e){ throw new AgentProxyException(e.toString());}
+    catch(Exception e){ throw new AgentProxyException(e.toString());}
     finally{
       try{
         if(sock!=null)
@@ -64,8 +71,8 @@ public class SSHAgentConnector implements Connector {
     return "ssh-agent";
   }
 
-  public static boolean isConnectorAvailable(){
-    return System.getenv("SSH_AUTH_SOCK")!=null;
+  public boolean isConnectorAvailable() {
+    return System.getenv("SSH_AUTH_SOCK") != null || this.socketPath != null;
   }
 
   public boolean isAvailable(){
@@ -73,11 +80,13 @@ public class SSHAgentConnector implements Connector {
   }
 
   private USocketFactory.Socket open() throws IOException {
-    String ssh_auth_sock = System.getenv("SSH_AUTH_SOCK");
-    if(ssh_auth_sock ==null) {
-      throw new IOException("SSH_AUTH_SOCK is not defined.");
-    } 
-    return factory.open(ssh_auth_sock);
+    if(this.socketPath == null) {
+      this.socketPath = System.getenv("SSH_AUTH_SOCK");
+      if(this.socketPath == null) {
+        throw new IOException("SSH_AUTH_SOCK is not defined.");
+      }
+    }
+    return factory.open(this.socketPath);
   }
 
   public void query(Buffer buffer) throws AgentProxyException {
