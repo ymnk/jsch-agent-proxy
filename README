@@ -63,7 +63,7 @@ Dependencies
 ============
 To work as a proxy to ssh-agent and Pageant,
 the current implementation depends on the following software
-  * JNA: https://github.com/twall/jna licensed under the GNU LGPL
+  * JNA: https://github.com/twall/jna licensed under the GNU LGPL and the Apache License 2.0
   * junixsocket: http://code.google.com/p/junixsocket/ licensed under the Apache License 2.0
   * OpenBSD's netcat: http://www.openbsd.org/cgi-bin/cvsweb/src/usr.bin/nc/
 
