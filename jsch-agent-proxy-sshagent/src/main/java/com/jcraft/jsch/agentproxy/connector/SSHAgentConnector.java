@@ -71,8 +71,8 @@ public class SSHAgentConnector implements Connector {
     return "ssh-agent";
   }
 
-  public boolean isConnectorAvailable() {
-    return System.getenv("SSH_AUTH_SOCK") != null || this.socketPath != null;
+  public static boolean isConnectorAvailable() {
+    return System.getenv("SSH_AUTH_SOCK") != null;
   }
 
   public boolean isAvailable(){

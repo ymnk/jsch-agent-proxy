@@ -73,41 +73,46 @@ public abstract class ConnectorFactory {
     ArrayList<String> trials = new ArrayList<String>();
 
     String[] _connectors = connectors.split(",");
-    for(int i = 0; i < _connectors.length; i++){
-      if(_connectors[i].trim().equals("pageant")){
-        if(PageantConnector.isConnectorAvailable()){
-          try{
+    for(int i = 0; i < _connectors.length; i++) {
+      if(_connectors[i].trim().equals("pageant")) {
+        if(PageantConnector.isConnectorAvailable()) {
+          try {
             return new PageantConnector();
-          }catch(AgentProxyException e){
+          }
+          catch(AgentProxyException e){
             trials.add("pageant");
           }
         }
       }else if(_connectors[i].trim().equals("ssh-agent")){
         String[] _usocketFactories = usocketFactories.split(",");
         for(int j = 0; j < _usocketFactories.length; j++){
-          USocketFactory usf = null;
-          if(_usocketFactories[j].trim().equals("nc")){
-            try{
-              new NCUSocketFactory();
-            } catch(AgentProxyException e){
-              trials.add("ssh-agent:nc");
+          if(SSHAgentConnector.isConnectorAvailable() && null != socketPath) {
+            USocketFactory usf = null;
+            if(_usocketFactories[j].trim().equals("nc")){
+              try{
+                new NCUSocketFactory();
+              }
+              catch(AgentProxyException e){
+                trials.add("ssh-agent:nc");
+              }
+            }else if(_usocketFactories[j].trim().equals("jna")){
+              try{
+                usf = new JNAUSocketFactory();
+              }
+              catch(AgentProxyException e){
+                trials.add("ssh-agent:jna");
+              }
             }
-          }else if(_usocketFactories[j].trim().equals("jna")){
-            try{
-              usf = new JNAUSocketFactory();
-            } catch(AgentProxyException e){
-              trials.add("ssh-agent:jna");
+  
+            if(usf != null){
+              SSHAgentConnector agentConn;
+              if(null != socketPath){
+                agentConn = new SSHAgentConnector(usf, socketPath);
+              } else{
+                agentConn = new SSHAgentConnector(usf);
+              }
+              return agentConn;
             }
-          }
-
-          if(usf != null){
-            SSHAgentConnector agentConn;
-            if(null != socketPath){
-              agentConn = new SSHAgentConnector(usf, socketPath);
-            } else{
-              agentConn = new SSHAgentConnector(usf);
-            }
-            return agentConn;
           }
         }
       }
