@@ -25,7 +25,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		$ mvn exec:java \
 		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingPageant"
 
-+ [UsingSSHAent.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/jsch/agentproxy/examples/UsingSSHAgent.java)  
++ [UsingSSHAgent.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/jsch/agentproxy/examples/UsingSSHAgent.java)  
     This sample demonstrates how to get accesses to ssh-agent.  
 
 		$ cd examples
