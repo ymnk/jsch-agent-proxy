@@ -25,7 +25,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 		$ mvn exec:java \
 		  -Dexec.mainClass="com.jcraft.jsch.agentproxy.examples.UsingPageant"
 
-+ [UsingSSHAent.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/jsch/agentproxy/examples/UsingSSHAgent.java)  
++ [UsingSSHAgent.java](https://github.com/ymnk/jsch-agent-proxy/blob/master/examples/src/main/java/com/jcraft/jsch/agentproxy/examples/UsingSSHAgent.java)  
     This sample demonstrates how to get accesses to ssh-agent.  
 
 		$ cd examples
@@ -64,7 +64,7 @@ This software is licensed under [BSD style license](https://github.com/ymnk/jsch
 To work as a proxy to ssh-agent and Pageant,
 the current implementation depends on the following software,
  
-+ JNA: https://github.com/twall/jna licensed under the [GNU LGPL](https://github.com/twall/jna/blob/master/LICENSE)
++ JNA: https://github.com/twall/jna licensed under the [GNU LGPL](https://github.com/twall/jna/blob/master/LICENSE) and the [Apache License 2.0](http://code.google.com/p/junixsocket/source/browse/trunk/junixsocket/LICENSE.txt)
 + junixsocket: http://code.google.com/p/junixsocket/ licensed under the [Apache License 2.0](http://code.google.com/p/junixsocket/source/browse/trunk/junixsocket/LICENSE.txt)
 + OpenBSD's netcat: http://www.openbsd.org/cgi-bin/cvsweb/src/usr.bin/nc/
 
