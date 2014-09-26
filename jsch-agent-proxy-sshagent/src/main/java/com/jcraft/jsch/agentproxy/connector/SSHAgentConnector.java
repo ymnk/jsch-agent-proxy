@@ -54,8 +54,8 @@ public class SSHAgentConnector implements Connector {
     try {
       sock = open();
     }
-    catch(IOException e){ throw new AgentProxyException(e.toString());}
-    catch(Exception e){ throw new AgentProxyException(e.toString());}
+    catch(IOException e){ throw new AgentProxyException(e.toString()); }
+    catch(Exception e){ throw new AgentProxyException(e.toString()); }
     finally{
       try{
         if(sock!=null)
@@ -72,7 +72,7 @@ public class SSHAgentConnector implements Connector {
   }
 
   public static boolean isConnectorAvailable() {
-    return System.getenv("SSH_AUTH_SOCK") != null;
+    return System.getenv("SSH_AUTH_SOCK")!=null;
   }
 
   public boolean isAvailable(){

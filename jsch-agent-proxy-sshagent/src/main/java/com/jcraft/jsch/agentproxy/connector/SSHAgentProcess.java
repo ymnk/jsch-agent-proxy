@@ -41,8 +41,8 @@ public class SSHAgentProcess{
   }
 
   public void stopAgent() throws IOException {
-	if(this.pid!=null){
+  	if(this.pid!=null){
       Runtime.getRuntime().exec("kill "+this.pid);
-	}
+  	}
   }
 }
