@@ -120,7 +120,7 @@ public abstract class ConnectorFactory {
 
     String message = "connector is not available: ";
     String foo = "";
-    for(int i = 0; i < trials.size(); i++){
+    for(int i = 0; i < trials.size(); i++){ 
       message += (foo + trials.get(i));
       foo = ",";
     }
