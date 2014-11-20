@@ -42,6 +42,7 @@ public abstract class ConnectorFactory {
 
   protected String connectors = "pageant,ssh-agent";
   protected String usocketFactories = "nc,jna";
+  protected String usocketPath = null;
 
   public void setPreferredConnectors(String connectors) {
     this.connectors = connectors;
@@ -57,6 +58,14 @@ public abstract class ConnectorFactory {
 
   public String getPreferredUSocketFactories() {
     return usocketFactories;
+  }
+
+  public void setUSocketPath(String usocketPath){
+    this.usocketPath = usocketPath;
+  }
+
+  public String getUSocketPath() {
+    return usocketPath;
   }
 
   public Connector createConnector() throws AgentProxyException {
@@ -75,7 +84,7 @@ public abstract class ConnectorFactory {
         }
       }
       else if(_connectors[i].trim().equals("ssh-agent")) {
-        if(!SSHAgentConnector.isConnectorAvailable())
+        if(!SSHAgentConnector.isConnectorAvailable(usocketPath))
           continue;
 
         String[] _usocketFactories = usocketFactories.split(",");
@@ -83,7 +92,7 @@ public abstract class ConnectorFactory {
           if(_usocketFactories[j].trim().equals("nc")) {
             try {
               USocketFactory usf = new NCUSocketFactory();
-              return new SSHAgentConnector(usf);
+              return new SSHAgentConnector(usf, usocketPath);
             }
             catch(AgentProxyException e){
               trials.add("ssh-agent:nc");
@@ -92,7 +101,7 @@ public abstract class ConnectorFactory {
           else if(_usocketFactories[j].trim().equals("jna")) {
             try {
               USocketFactory usf = new JNAUSocketFactory();
-              return new SSHAgentConnector(usf);
+              return new SSHAgentConnector(usf, usocketPath);
             }
             catch(AgentProxyException e){
               trials.add("ssh-agent:jna");
