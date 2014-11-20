@@ -38,9 +38,15 @@ import java.io.IOException;
 
 public class SSHAgentConnector implements Connector {
   private USocketFactory factory;
+  private String usocketPath;
 
   public SSHAgentConnector(USocketFactory factory) throws AgentProxyException {
+    this(factory, null);
+  }
+ 
+  public SSHAgentConnector(USocketFactory factory, String usocketPath) throws AgentProxyException {
     this.factory = factory;
+    this.usocketPath = usocketPath;
 
     // checking if factory is really functional.
     USocketFactory.Socket sock = null;
@@ -65,7 +71,11 @@ public class SSHAgentConnector implements Connector {
   }
 
   public static boolean isConnectorAvailable(){
-    return System.getenv("SSH_AUTH_SOCK")!=null;
+    return isConnectorAvailable(null);
+  }
+
+  public static boolean isConnectorAvailable(String usocketPath){
+    return System.getenv("SSH_AUTH_SOCK")!=null || usocketPath!=null;
   }
 
   public boolean isAvailable(){
@@ -73,8 +83,11 @@ public class SSHAgentConnector implements Connector {
   }
 
   private USocketFactory.Socket open() throws IOException {
-    String ssh_auth_sock = System.getenv("SSH_AUTH_SOCK");
-    if(ssh_auth_sock ==null) {
+    String ssh_auth_sock = usocketPath;
+    if(ssh_auth_sock == null) {
+      ssh_auth_sock = System.getenv("SSH_AUTH_SOCK");
+    }
+    if(ssh_auth_sock == null) {
       throw new IOException("SSH_AUTH_SOCK is not defined.");
     } 
     return factory.open(ssh_auth_sock);
