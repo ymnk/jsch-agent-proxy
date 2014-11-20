@@ -60,11 +60,11 @@ public abstract class ConnectorFactory {
     return usocketFactories;
   }
 
-  public void setPreferredUSocketPath(String usocketPath){
+  public void setUSocketPath(String usocketPath){
     this.usocketPath = usocketPath;
   }
 
-  public String getPreferredUSocketPath() {
+  public String getUSocketPath() {
     return usocketPath;
   }
 
