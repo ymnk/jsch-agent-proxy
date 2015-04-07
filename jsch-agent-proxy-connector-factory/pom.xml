@@ -48,6 +48,18 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.2</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <!-- ensure jsch.agentproxy.core files aren't packaged -->
+          <excludeDependencies>true</excludeDependencies>
+          <instructions>
+            <!-- provided by jsch.agentproxy.core -->
+            <Export-Package>!com.jcraft.jsch.agentproxy</Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
