@@ -35,6 +35,7 @@
 <!--
     <module>jsch-agent-proxy-usocket-junixsocket</module>
 -->
+    <module>jsch-agent-proxy-usocket-jnrunixsocket</module>
     <module>jsch-agent-proxy-usocket-nc</module>
     <module>jsch-agent-proxy-svnkit-trilead-ssh2</module>
   </modules>
