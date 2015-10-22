@@ -42,7 +42,7 @@ public class NCUSocketFactory implements USocketFactory {
     Process p = null;
     StringBuilder sb = new StringBuilder();
     try {
-      p = Runtime.getRuntime().exec("nc -h");
+      p = Runtime.getRuntime().exec("/bin/nc -h");
       InputStream is = p.getErrorStream();
       byte[] buf = new byte[1024];
       int i = 0;
@@ -112,7 +112,7 @@ public class NCUSocketFactory implements USocketFactory {
   public Socket open(String path) throws IOException {
     Process p = null;
     try {
-      p = Runtime.getRuntime().exec("nc -U "+path);
+      p = Runtime.getRuntime().exec("/bin/nc -U "+path);
     }
     catch (SecurityException e){
       throw new IOException(e.toString());
