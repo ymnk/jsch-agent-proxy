@@ -14,7 +14,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>net.schmizz</groupId>
+      <groupId>com.hierynomus</groupId>
       <artifactId>sshj</artifactId>
       <version>[0.8.1,)</version>
     </dependency>
