@@ -43,12 +43,13 @@ public class NCUSocketFactory implements USocketFactory {
     StringBuilder sb = new StringBuilder();
     try {
       p = Runtime.getRuntime().exec("nc -h");
-      InputStream is = p.getErrorStream();
+      InputStream is = p.getErrorStream().available() > 0 ? p.getErrorStream() : p.getInputStream();
       byte[] buf = new byte[1024];
       int i = 0;
       while((i = is.read(buf, 0, buf.length))>0){
         sb.append(new String(buf, 0, i));
       }
+      is.close();
     }
     catch(IOException e){
     }
