@@ -8,8 +8,8 @@ modification, are permitted provided that the following conditions are met:
   1. Redistributions of source code must retain the above copyright notice,
      this list of conditions and the following disclaimer.
 
-  2. Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
+  2. Redistributions in binary form must reproduce the above copyright 
+     notice, this list of conditions and the following disclaimer in 
      the documentation and/or other materials provided with the distribution.
 
   3. The names of the authors may not be used to endorse or promote products
@@ -77,9 +77,8 @@ public class NCUSocketFactory implements USocketFactory {
     private InputStream is;
     private OutputStream os;
 
-    @Override
     public int readFull(byte[] buf, int s, int len) throws IOException {
-      int _len = len;
+      int _len = len; 
       while(len>0){
         int j = is.read(buf, s, len);
         if(j<=0)
@@ -92,7 +91,6 @@ public class NCUSocketFactory implements USocketFactory {
       return _len;
     }
 
-    @Override
     public void write(byte[] buf, int s, int len) throws IOException {
       os.write(buf, s, len);
       os.flush();
@@ -104,7 +102,6 @@ public class NCUSocketFactory implements USocketFactory {
       this.is = p.getInputStream();
     }
 
-    @Override
     public void close() throws IOException {
       p.getErrorStream().close();
       p.getInputStream().close();
