@@ -1,0 +1,19 @@
+name: "CI"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: gradle/wrapper-validation-action@v1
+    - uses: gradle/gradle-build-action@v2
+    - run: ./gradlew build

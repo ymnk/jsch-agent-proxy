@@ -25,52 +25,29 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package com.jcraft.jsch.agentproxy.examples;
+package com.jcraft.jsch.agentproxy.examples
 
-import com.jcraft.jsch.agentproxy.AgentProxy;
-import com.jcraft.jsch.agentproxy.AgentProxyException;
-import com.jcraft.jsch.agentproxy.Identity;
-import com.jcraft.jsch.agentproxy.USocketFactory;
-import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
-import com.jcraft.jsch.agentproxy.usocket.*;
+import com.jcraft.jsch.agentproxy.*
+import com.jcraft.jsch.agentproxy.connector.*
 
-public class UsingSSHAgent {
-  public static void main(String[] arg){
-
-    try{
-      //USocketFactory udsf = new JUnixDomainSocketFactory();
-      //USocketFactory udsf = new NCUSocketFactory();
-      USocketFactory udsf = new JNAUSocketFactory();
-      AgentProxy ap = new AgentProxy(new SSHAgentConnector(udsf));
-
-
-      Identity[] identities = ap.getIdentities();
-
-      System.out.println("count: "+identities.length);
-
-      for(int i=0; i<identities.length; i++){
-        System.out.println("  comment: "+
-                           new String(identities[i].getComment()));
-
-        byte[] blob = identities[i].getBlob();
-        System.out.print("  blob: ");
-        for(int j=0; j<blob.length; j++){
-          System.out.print(Integer.toHexString(blob[j]&0xff)+":");
+fun main() {
+    val ap = AgentProxy(PageantConnector())
+    val identities = ap.identities
+    println("count: " + identities.size)
+    for (i in identities.indices) {
+        println("  comment: " + String(identities[i].comment))
+        val blob = identities[i].blob
+        print("  blob: ")
+        for (j in blob.indices) {
+            print(Integer.toHexString(blob[j].toInt() and 0xff) + ":")
         }
-        System.out.println("");
-
-        String data = "foo";
-        byte[] signed = ap.sign(blob, data.getBytes());
-        System.out.print("  sign: "+data+" -> ");
-        for(int j=0; j<signed.length; j++){
-          System.out.print(Integer.toHexString(signed[j]&0xff)+":");
+        println("")
+        val data = "foo"
+        val signed = ap.sign(blob, data.toByteArray())
+        print("  sign: $data -> ")
+        for (j in signed.indices) {
+            print(Integer.toHexString(signed[j].toInt() and 0xff) + ":")
         }
-        System.out.println("");
-      }
-
+        println("")
     }
-    catch(AgentProxyException e){
-      System.out.println(e);
-    }
-  }
 }

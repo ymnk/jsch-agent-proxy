@@ -1,9 +1,9 @@
 plugins {
-    `java-library`
+    kotlin("jvm")
     `maven-publish`
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_11
+kotlin.jvmToolchain(17)
 
 java {
     withSourcesJar()

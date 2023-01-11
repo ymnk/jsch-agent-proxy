@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,23 +25,22 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy
 
-package com.jcraft.jsch.agentproxy;
+import java.io.*
 
-public class Identity {
-  private byte[] blob;
-  private byte[] comment;
+interface USocketFactory {
+    abstract class Socket {
+        @Throws(IOException::class)
+        abstract fun readFull(buf: ByteArray, s: Int, len: Int): Int
 
-  Identity(byte[] blob, byte[] comment){
-    this.blob = blob;
-    this.comment = comment;
-  }
+        @Throws(IOException::class)
+        abstract fun write(buf: ByteArray, s: Int, len: Int)
 
-  public byte[] getBlob(){
-    return blob;
-  }
+        @Throws(IOException::class)
+        abstract fun close()
+    }
 
-  public byte[] getComment(){
-    return comment;
-  }
+    @Throws(IOException::class)
+    fun open(path: String): Socket
 }

@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,16 +25,6 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy
 
-package com.jcraft.jsch.agentproxy;
-
-import java.io.IOException;
-
-public interface USocketFactory {
-  public abstract class Socket {
-    public abstract int readFull(byte[] buf, int s, int len) throws IOException;
-    public abstract void write(byte[] buf, int s, int len) throws IOException;
-    public abstract void close() throws IOException;
-  }
-  public Socket open(String path) throws IOException;
-}
+class AgentProxyException(message: String) : Exception(message)
