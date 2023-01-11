@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2013 Olli Helenius All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,69 +25,53 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package com.jcraft.jsch.agentproxy.sshj;
+package com.jcraft.jsch.agentproxy.sshj
 
-import com.jcraft.jsch.agentproxy.AgentProxy;
-import com.jcraft.jsch.agentproxy.Identity;
-import net.schmizz.sshj.common.Buffer;
-import net.schmizz.sshj.common.Message;
-import net.schmizz.sshj.common.SSHPacket;
-import net.schmizz.sshj.transport.TransportException;
-import net.schmizz.sshj.userauth.UserAuthException;
-import net.schmizz.sshj.userauth.method.AbstractAuthMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jcraft.jsch.agentproxy.*
+import net.schmizz.sshj.common.*
+import net.schmizz.sshj.common.Buffer.*
+import net.schmizz.sshj.transport.*
+import net.schmizz.sshj.userauth.*
+import net.schmizz.sshj.userauth.method.*
+import org.slf4j.LoggerFactory
 
 /**
  * An AuthMethod for sshj authentication with an agent.
  */
-public class AuthAgent extends AbstractAuthMethod {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+class AuthAgent(
+    /** The AgentProxy instance that is used for signing  */
+    private val agentProxy: AgentProxy,
+    /** The identity from Agent  */
+    private val identity: Identity
+) : AbstractAuthMethod("publickey") {
+    val log = LoggerFactory.getLogger(javaClass)
 
-    /** The AgentProxy instance that is used for signing */
-    private final AgentProxy agentProxy;
-    /** The identity from Agent */
-    private final Identity identity;
-    /** The identity's key algorithm */
-    private final String algorithm;
-    private final String comment;
+    /** The identity's key algorithm  */
+    private val algorithm: String = PlainBuffer(identity.blob).readString()
+    private val comment: String = String(identity.comment)
 
-    public AuthAgent(AgentProxy agentProxy, Identity identity) throws Buffer.BufferException {
-        super("publickey");
-        this.agentProxy = agentProxy;
-        this.identity = identity;
-        this.comment = new String(identity.getComment());
-        this.algorithm = (new Buffer.PlainBuffer(identity.getBlob())).readString();
+    /** Internal use.  */
+    @Throws(UserAuthException::class, TransportException::class)
+    override fun handle(cmd: Message, buf: SSHPacket) {
+        if (cmd == Message.USERAUTH_60) sendSignedReq() else super.handle(cmd, buf)
     }
 
-    /** Internal use. */
-    @Override
-    public void handle(Message cmd, SSHPacket buf)
-            throws UserAuthException, TransportException {
-        if (cmd == Message.USERAUTH_60)
-            sendSignedReq();
-        else
-            super.handle(cmd, buf);
-    }
-
-    protected SSHPacket putPubKey(SSHPacket reqBuf)
-            throws UserAuthException {
+    @Throws(UserAuthException::class)
+    fun putPubKey(reqBuf: SSHPacket): SSHPacket {
         reqBuf
             .putString(algorithm)
-            .putBytes(identity.getBlob()).getCompactData();
-        return reqBuf;
+            .putBytes(identity.blob).compactData
+        return reqBuf
     }
 
-    private SSHPacket putSig(SSHPacket reqBuf)
-            throws UserAuthException {
-        final byte[] dataToSign = new Buffer.PlainBuffer()
-                .putString(params.getTransport().getSessionID())
-                .putBuffer(reqBuf) // & rest of the data for sig
-                .getCompactData();
-
-        reqBuf.putBytes(agentProxy.sign(identity.getBlob(), dataToSign));
-
-        return reqBuf;
+    @Throws(UserAuthException::class)
+    private fun putSig(reqBuf: SSHPacket): SSHPacket {
+        val dataToSign = PlainBuffer()
+            .putString(params.transport.sessionID)
+            .putBuffer(reqBuf) // & rest of the data for sig
+            .compactData
+        reqBuf.putBytes(agentProxy.sign(identity.blob, dataToSign))
+        return reqBuf
     }
 
     /**
@@ -97,9 +80,9 @@ public class AuthAgent extends AbstractAuthMethod {
      * @throws UserAuthException
      * @throws TransportException
      */
-    private void sendSignedReq()
-            throws UserAuthException, TransportException {
-        params.getTransport().write(putSig(buildReq(true)));
+    @Throws(UserAuthException::class, TransportException::class)
+    private fun sendSignedReq() {
+        params.transport.write(putSig(buildReq(true)))
     }
 
     /**
@@ -107,20 +90,19 @@ public class AuthAgent extends AbstractAuthMethod {
      *
      * @param signed whether the request packet will contain signature
      *
-     * @return the {@link SSHPacket} containing the request packet
+     * @return the [SSHPacket] containing the request packet
      *
      * @throws UserAuthException
      */
-    private SSHPacket buildReq(boolean signed)
-            throws UserAuthException {
-        log.debug("Attempting authentication using agent identity {}", comment);
-        return putPubKey(super.buildReq().putBoolean(signed));
+    @Throws(UserAuthException::class)
+    private fun buildReq(signed: Boolean): SSHPacket {
+        log.debug("Attempting authentication using agent identity {}", comment)
+        return putPubKey(super.buildReq().putBoolean(signed))
     }
 
-    /** Builds a feeler request (sans signature). */
-    @Override
-    protected SSHPacket buildReq()
-            throws UserAuthException {
-        return buildReq(false);
+    /** Builds a feeler request (sans signature).  */
+    @Throws(UserAuthException::class)
+    override fun buildReq(): SSHPacket {
+        return buildReq(false)
     }
 }

@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2013 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,97 +25,83 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy.usocket
 
-package com.jcraft.jsch.agentproxy.usocket;
+import com.jcraft.jsch.agentproxy.*
+import java.io.*
 
-import com.jcraft.jsch.agentproxy.AgentProxyException;
-import com.jcraft.jsch.agentproxy.USocketFactory;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
-
-public class NCUSocketFactory implements USocketFactory {
-
-  public NCUSocketFactory() throws AgentProxyException {
-    Process p = null;
-    StringBuilder sb = new StringBuilder();
-    try {
-      p = Runtime.getRuntime().exec("nc -h");
-      InputStream is = p.getErrorStream();
-      byte[] buf = new byte[1024];
-      int i = 0;
-      while((i = is.read(buf, 0, buf.length))>0){
-        sb.append(new String(buf, 0, i));
-      }
-    }
-    catch(IOException e){
-    }
-    finally {
-      try {
-        if(p != null) {
-          p.getErrorStream().close();
-          p.getOutputStream().close();
-          p.getInputStream().close();
-          p.destroy();
+class NCUSocketFactory : USocketFactory {
+    init {
+        var p: Process? = null
+        val sb = StringBuilder()
+        try {
+            p = Runtime.getRuntime().exec("nc -h")
+            val `is` = p.errorStream
+            val buf = ByteArray(1024)
+            var i: Int
+            while (`is`.read(buf, 0, buf.size).also { i = it } > 0) {
+                sb.append(String(buf, 0, i))
+            }
+        } catch (_: IOException) {
+        } finally {
+            try {
+                if (p != null) {
+                    p.errorStream.close()
+                    p.outputStream.close()
+                    p.inputStream.close()
+                    p.destroy()
+                }
+            } catch (_: IOException) {
+            }
         }
-      }
-      catch(IOException e){
-      }
-    }
-
-    String result = sb.toString();
-    if(result.indexOf("-U") == -1){
-      throw new AgentProxyException("netcat does not support -U option.");
-    }
-  }
-
-  public class MySocket extends Socket {
-    private Process p;
-    private InputStream is;
-    private OutputStream os;
-
-    public int readFull(byte[] buf, int s, int len) throws IOException {
-      int _len = len; 
-      while(len>0){
-        int j = is.read(buf, s, len);
-        if(j<=0)
-          return -1;
-        if(j>0){
-          s+=j;
-          len-=j;
+        val result = sb.toString()
+        if (result.indexOf("-U") == -1) {
+            throw AgentProxyException("netcat does not support -U option.")
         }
-      }
-      return _len;
     }
 
-    public void write(byte[] buf, int s, int len) throws IOException {
-      os.write(buf, s, len);
-      os.flush();
+    inner class MySocket internal constructor(private val p: Process) : USocketFactory.Socket() {
+        private val `is`: InputStream = p.inputStream
+        private val os: OutputStream = p.outputStream
+
+        @Throws(IOException::class)
+        override fun readFull(buf: ByteArray, s: Int, len: Int): Int {
+            var s = s
+            var len = len
+            val _len = len
+            while (len > 0) {
+                val j = `is`.read(buf, s, len)
+                if (j <= 0) {
+                    return -1
+                }
+                s += j
+                len -= j
+            }
+            return _len
+        }
+
+        @Throws(IOException::class)
+        override fun write(buf: ByteArray, s: Int, len: Int) {
+            os.write(buf, s, len)
+            os.flush()
+        }
+
+        @Throws(IOException::class)
+        override fun close() {
+            p.errorStream.close()
+            p.inputStream.close()
+            p.destroy()
+            os.close()
+        }
     }
 
-    MySocket(Process p) throws IOException {
-      this.p = p;
-      this.os = p.getOutputStream();
-      this.is = p.getInputStream();
+    @Throws(IOException::class)
+    override fun open(path: String): USocketFactory.Socket {
+        val p: Process = try {
+            Runtime.getRuntime().exec("nc -U $path")
+        } catch (e: SecurityException) {
+            throw IOException(e.toString())
+        }
+        return MySocket(p)
     }
-
-    public void close() throws IOException {
-      p.getErrorStream().close();
-      p.getInputStream().close();
-      p.destroy();
-      os.close();
-    }
-  }
-
-  public Socket open(String path) throws IOException {
-    Process p = null;
-    try {
-      p = Runtime.getRuntime().exec("nc -U "+path);
-    }
-    catch (SecurityException e){
-      throw new IOException(e.toString());
-    }
-    return new MySocket(p);
-  }
 }

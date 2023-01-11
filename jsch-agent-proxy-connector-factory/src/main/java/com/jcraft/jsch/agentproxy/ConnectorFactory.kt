@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2013 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,118 +25,79 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy
 
-package com.jcraft.jsch.agentproxy;
+import com.jcraft.jsch.agentproxy.connector.*
+import com.jcraft.jsch.agentproxy.usocket.*
 
-import com.jcraft.jsch.agentproxy.Connector;
-import com.jcraft.jsch.agentproxy.AgentProxyException;
-import com.jcraft.jsch.agentproxy.USocketFactory;
-import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
-import com.jcraft.jsch.agentproxy.connector.PageantConnector;
-import com.jcraft.jsch.agentproxy.usocket.NCUSocketFactory;
-import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
-import java.util.ArrayList;
+abstract class ConnectorFactory {
+    var preferredConnectors = "pageant,ssh-agent"
+    var preferredUSocketFactories = "nc,jna"
+    var uSocketPath: String? = null
 
-public abstract class ConnectorFactory {
-
-  protected String connectors = "pageant,ssh-agent";
-  protected String usocketFactories = "nc,jna";
-  protected String usocketPath = null;
-
-  public void setPreferredConnectors(String connectors) {
-    this.connectors = connectors;
-  }
-
-  public String getPreferredConnectors() {
-    return connectors;
-  }
-
-  public void setPreferredUSocketFactories(String usocketFactories){
-    this.usocketFactories = usocketFactories;
-  }
-
-  public String getPreferredUSocketFactories() {
-    return usocketFactories;
-  }
-
-  public void setUSocketPath(String usocketPath){
-    this.usocketPath = usocketPath;
-  }
-
-  public String getUSocketPath() {
-    return usocketPath;
-  }
-
-  public Connector createConnector() throws AgentProxyException {
-    ArrayList<String> trials = new ArrayList<String>();
-
-    String[] _connectors = connectors.split(",");
-    for(int i = 0; i < _connectors.length; i++) {
-      if(_connectors[i].trim().equals("pageant")) {
-        if(PageantConnector.isConnectorAvailable()) {
-          try {
-            return new PageantConnector();
-          }
-          catch(AgentProxyException e){
-            trials.add("pageant");
-          }
+    @Throws(AgentProxyException::class)
+    fun createConnector(): Connector {
+        val trials = ArrayList<String>()
+        val _connectors = preferredConnectors.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+        for (i in _connectors.indices) {
+            if (_connectors[i].trim { it <= ' ' } == "pageant") {
+                if (PageantConnector.isConnectorAvailable()) {
+                    try {
+                        return PageantConnector()
+                    } catch (e: AgentProxyException) {
+                        trials.add("pageant")
+                    }
+                }
+            } else if (_connectors[i].trim { it <= ' ' } == "ssh-agent") {
+                if (!SSHAgentConnector.isConnectorAvailable(uSocketPath)) continue
+                val _usocketFactories =
+                    preferredUSocketFactories.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                for (j in _usocketFactories.indices) {
+                    if (_usocketFactories[j].trim { it <= ' ' } == "nc") {
+                        try {
+                            val usf: USocketFactory = NCUSocketFactory()
+                            return SSHAgentConnector(usf, uSocketPath)
+                        } catch (e: AgentProxyException) {
+                            trials.add("ssh-agent:nc")
+                        }
+                    } else if (_usocketFactories[j].trim { it <= ' ' } == "jna") {
+                        try {
+                            val usf: USocketFactory = JNAUSocketFactory()
+                            return SSHAgentConnector(usf, uSocketPath)
+                        } catch (e: AgentProxyException) {
+                            trials.add("ssh-agent:jna")
+                        }
+                    }
+                }
+            }
         }
-      }
-      else if(_connectors[i].trim().equals("ssh-agent")) {
-        if(!SSHAgentConnector.isConnectorAvailable(usocketPath))
-          continue;
-
-        String[] _usocketFactories = usocketFactories.split(",");
-        for(int j = 0; j < _usocketFactories.length; j++) {
-          if(_usocketFactories[j].trim().equals("nc")) {
-            try {
-              USocketFactory usf = new NCUSocketFactory();
-              return new SSHAgentConnector(usf, usocketPath);
-            }
-            catch(AgentProxyException e){
-              trials.add("ssh-agent:nc");
-            }
-          }
-          else if(_usocketFactories[j].trim().equals("jna")) {
-            try {
-              USocketFactory usf = new JNAUSocketFactory();
-              return new SSHAgentConnector(usf, usocketPath);
-            }
-            catch(AgentProxyException e){
-              trials.add("ssh-agent:jna");
-            }
-          }
+        var message = "connector is not available: "
+        var foo = ""
+        for (i in trials.indices) {
+            message += foo + trials[i]
+            foo = ","
         }
-      }
+        throw AgentProxyException(message)
     }
 
-    String message = "connector is not available: ";
-    String foo = "";
-    for(int i = 0; i < trials.size(); i++){ 
-      message += (foo + trials.get(i));
-      foo = ",";
-    }
-    throw new AgentProxyException(message);
-  }
-
-  public static ConnectorFactory getDefault() {
-    return new Default();
-  }
-
-  static class Default extends ConnectorFactory {
-    Default() {
-      String osName = System.getProperty("os.name");
-      if(osName != null){
-        if(!osName.startsWith("Windows")){
-          setPreferredConnectors("ssh-agent");
-        }
-        /*
+    internal class Default : ConnectorFactory() {
+        init {
+            val osName = System.getProperty("os.name")
+            if (osName != null) {
+                if (!osName.startsWith("Windows")) {
+                    preferredConnectors = "ssh-agent"
+                }/*
         // NetBSD's nc must be available since Mac OS X Tiger.
         if(osName.startsWith("Mac")){
           setUSocketFactories("nc");
         }
         */
-      }
+            }
+        }
     }
-  }
+
+    companion object {
+        @JvmStatic
+        fun getDefault(): ConnectorFactory = Default()
+    }
 }
