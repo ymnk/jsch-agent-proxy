@@ -1,3 +1,7 @@
+pluginManagement {
+    includeBuild("build-logic")
+}
+
 rootProject.name = "jsch.agentproxy"
 
 include(":jsch.agentproxy.jsch")
