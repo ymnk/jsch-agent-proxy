@@ -12,5 +12,5 @@ dependencies {
     api(project(":jsch.agentproxy.connector-factory"))
     api(project(":jsch.agentproxy.sshj"))
     api(project(":jsch.agentproxy.svnkit-trilead-ssh2"))
-    api("com.trilead:trilead-ssh2:1.0.0-build217")
+    api("com.trilead:trilead-ssh2:1.0.0-build222")
 }

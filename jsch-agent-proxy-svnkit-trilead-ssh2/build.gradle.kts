@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api("com.trilead:trilead-ssh2:1.0.0-build217")
+    api("com.trilead:trilead-ssh2:1.0.0-build222")
     api(project(":jsch.agentproxy.core"))
 }
