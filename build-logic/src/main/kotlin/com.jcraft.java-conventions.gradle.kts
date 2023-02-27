@@ -3,7 +3,7 @@ plugins {
     `maven-publish`
 }
 
-kotlin.jvmToolchain(17)
+kotlin.jvmToolchain(8)
 
 java {
     withSourcesJar()

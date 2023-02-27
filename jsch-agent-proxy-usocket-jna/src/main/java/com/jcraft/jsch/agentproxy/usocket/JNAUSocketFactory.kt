@@ -1,4 +1,3 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /*
 Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
 
@@ -26,117 +25,98 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy.usocket
 
-package com.jcraft.jsch.agentproxy.usocket;
+import com.jcraft.jsch.agentproxy.*
+import com.sun.jna.*
+import java.io.*
 
-import com.jcraft.jsch.agentproxy.AgentProxyException;
-import com.jcraft.jsch.agentproxy.USocketFactory;
+class JNAUSocketFactory : USocketFactory {
+    interface CLibrary : Library {
+        fun socket(domain: Int, type: Int, protocol: Int): Int
+        fun fcntl(fd: Int, cmd: Int, vararg args: Any?): Int
+        fun connect(sockfd: Int, addr: Pointer?, addrlen: Int): Int
+        fun close(fd: Int): Int
+        fun read(fd: Int, buf: ByteArray?, count: Int): Int
+        fun write(fd: Int, buf: ByteArray?, count: Int): Int
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.List;
-
-public class JNAUSocketFactory implements USocketFactory {
-
-  public interface CLibrary extends Library {
-    CLibrary INSTANCE = (CLibrary) Native.loadLibrary("c", CLibrary.class);
-    int socket(int domain, int type, int protocol);
-    int fcntl(int fd, int cmd, Object... args);
-    int connect(int sockfd, Pointer addr, int addrlen);
-    int close(int fd);
-    int read(int fd, byte[] buf, int count);
-    int write(int fd, byte[] buf, int count);
-  }
-
-  public static class SockAddr extends Structure {
-    public short sun_family;
-    public byte[] sun_path;
-
-    protected List<String> getFieldOrder() {
-      return List.of("sun_family", "sun_path");
-    }
-  }
-
-  public JNAUSocketFactory() throws AgentProxyException {
-  }
-
-  public static class MySocket extends Socket {
-    private final int sock;
-
-    public int readFull(@NotNull byte[] buf, int s, int len) {
-      byte[] _buf = buf;
-      int _len = len;
-      int _s = s;
-
-      while(_len > 0){
-        if(_s != 0){
-          _buf = new byte[_len];
+        companion object {
+            val INSTANCE: CLibrary = Native.load("c", CLibrary::class.java)
         }
-        int i = CLibrary.INSTANCE.read(sock, _buf, _len);
-        if(i <= 0){
-          return -1;
-          // throw new IOException("failed to read usocket");
+    }
+
+    class SockAddr : Structure() {
+        var sun_family: Short = 0
+        var sun_path: ByteArray = byteArrayOf()
+
+        override fun getFieldOrder(): List<String> = listOf("sun_family", "sun_path")
+    }
+
+    class MySocket internal constructor(private val sock: Int) : USocketFactory.Socket() {
+        override fun readFull(buf: ByteArray, s: Int, len: Int): Int {
+            var _buf = buf
+            var _len = len
+            var _s = s
+            while (_len > 0) {
+                if (_s != 0) {
+                    _buf = ByteArray(_len)
+                }
+                val i = CLibrary.INSTANCE.read(
+                    sock, _buf, _len
+                )
+                if (i <= 0) {
+                    return -1
+                    // throw new IOException("failed to read usocket");
+                }
+                if (_s != 0) System.arraycopy(_buf, 0, buf, _s, i)
+                _s += i
+                _len -= i
+            }
+            return len
         }
-        if(_s != 0)
-          System.arraycopy(_buf, 0, buf, _s, i);
-        _s += i;
-        _len -= i;
-      }
-      return len;
+
+        override fun write(buf: ByteArray, s: Int, len: Int) {
+            var _buf = buf
+            if (s != 0) {
+                _buf = ByteArray(len)
+                System.arraycopy(buf, s, _buf, 0, len)
+            }
+            CLibrary.INSTANCE.write(sock, _buf, len)
+        }
+
+        override fun close() {
+            CLibrary.INSTANCE.close(sock)
+        }
     }
 
-    public void write(@NotNull byte[] buf, int s, int len) {
-      byte[] _buf = buf;
-      if(s != 0){
-        _buf = new byte[len];
-        System.arraycopy(buf, s, _buf, 0, len);
-      }
-      CLibrary.INSTANCE.write(sock, _buf, len);
+    @Throws(IOException::class)
+    override fun open(path: String): USocketFactory.Socket {
+        val sock = CLibrary.INSTANCE.socket(
+            1,  // AF_UNIX
+            1,  // SOCK_STREAM
+            0
+        )
+        if (sock < 0) {
+            throw IOException("failed to allocate usocket")
+        }
+        var foo = CLibrary.INSTANCE.fcntl(sock, 2, 8)
+        if (foo < 0) {
+            CLibrary.INSTANCE.close(sock)
+            throw IOException("failed to fctrl usocket: $foo")
+        }
+        val sockaddr = SockAddr()
+        sockaddr.sun_family = 1
+        sockaddr.sun_path = ByteArray(108)
+        System.arraycopy(
+            path.toByteArray(), 0,
+            sockaddr.sun_path, 0,
+            path.length
+        )
+        sockaddr.write()
+        foo = CLibrary.INSTANCE.connect(sock, sockaddr.pointer, sockaddr.size())
+        if (foo < 0) {
+            throw IOException("failed to fctrl usocket: $foo")
+        }
+        return MySocket(sock)
     }
-
-    MySocket(int sock) {
-      this.sock = sock;
-    }
-
-    public void close() {
-      CLibrary.INSTANCE.close(sock);
-    }
-  }
-
-  @NotNull
-  public Socket open(@NotNull String path) throws IOException {
-
-    int sock = CLibrary.INSTANCE.socket(1,  // AF_UNIX
-                                        1,  // SOCK_STREAM
-                                        0);
-    if(sock < 0){
-      throw new IOException("failed to allocate usocket");
-    }
-
-    int foo = CLibrary.INSTANCE.fcntl(sock, 2, 8);
-    if (foo < 0){
-      CLibrary.INSTANCE.close(sock);
-      throw new IOException("failed to fctrl usocket: "+foo);
-    }
-
-    SockAddr sockaddr = new SockAddr();
-    sockaddr.sun_family = 1; 
-    sockaddr.sun_path = new byte[108];
-    System.arraycopy(path.getBytes(), 0,
-                     sockaddr.sun_path, 0,
-                     path.length());
-    sockaddr.write();
-
-    foo = CLibrary.INSTANCE.connect(sock, sockaddr.getPointer(), sockaddr.size());
-    if (foo < 0){
-      throw new IOException("failed to fctrl usocket: "+foo);
-    }
-
-    return new MySocket(sock);
-  }
 }
