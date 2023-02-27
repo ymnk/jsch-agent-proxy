@@ -56,7 +56,7 @@ class NCUSocketFactory : USocketFactory {
         }
         val result = sb.toString()
         if (result.indexOf("-U") == -1) {
-            throw AgentProxyException("netcat does not support -U option.")
+            throw AgentProxyException("netcat does not support -U option.", null)
         }
     }
 

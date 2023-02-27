@@ -11,7 +11,7 @@ java {
 }
 
 publishing {
-    publications.create<MavenPublication>("maven") {
+    publications.register<MavenPublication>("maven") {
         from(components["java"])
     }
 }

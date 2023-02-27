@@ -27,17 +27,21 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package com.jcraft.jsch.agentproxy.examples;
 
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-
-import com.jcraft.jsch.agentproxy.*;
-import com.jcraft.jsch.agentproxy.usocket.*;
-import com.jcraft.jsch.agentproxy.connector.*;
-import com.jcraft.jsch.agentproxy.sshj.*;
-import net.schmizz.sshj.*;
-import net.schmizz.sshj.connection.channel.direct.*;
+import com.jcraft.jsch.agentproxy.AgentProxy;
+import com.jcraft.jsch.agentproxy.AgentProxyException;
+import com.jcraft.jsch.agentproxy.Connector;
+import com.jcraft.jsch.agentproxy.ConnectorFactory;
+import com.jcraft.jsch.agentproxy.Identity;
+import com.jcraft.jsch.agentproxy.sshj.AuthAgent;
+import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.userauth.method.AuthMethod;
+
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SshjWithAgentProxy {
     public static void main(String[] args) throws Exception {
@@ -90,14 +94,14 @@ public class SshjWithAgentProxy {
 
     private static Connector getAgentConnector() {
         try {
-          return ConnectorFactory.getDefault().createConnector();
+            return ConnectorFactory.getDefault().createConnector();
         } catch (AgentProxyException e) {
             System.err.println(e);
         }
         return null;
     }
 
-    private static List<AuthMethod> getAuthMethods(AgentProxy agent) throws Exception {
+    private static List<AuthMethod> getAuthMethods(AgentProxy agent) {
         Identity[] identities = agent.getIdentities();
         List<AuthMethod> result = new ArrayList<AuthMethod>();
         for (Identity identity : identities) {

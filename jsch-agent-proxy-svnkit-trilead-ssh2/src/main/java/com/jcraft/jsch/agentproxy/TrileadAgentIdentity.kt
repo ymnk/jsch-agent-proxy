@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2013 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,32 +25,30 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy
 
-package com.jcraft.jsch.agentproxy;
+import com.trilead.ssh2.auth.*
 
-import com.trilead.ssh2.auth.AgentIdentity;
+class TrileadAgentIdentity(
+    private val proxy: AgentProxy, 
+    private val wrappedIdentity: Identity
+) : AgentIdentity {
+    private var algName: String
 
-public class TrileadAgentIdentity implements AgentIdentity {
-  AgentProxy proxy;
-  Identity wrappedIdentity;
-  String algName;
+    init {
+        val blob = wrappedIdentity.blob
+        algName = String(Buffer(blob).string)
+    }
 
-  public TrileadAgentIdentity(AgentProxy proxy, Identity wrappedIdentity) {
-    byte[] blob = wrappedIdentity.getBlob();
-    this.proxy = proxy;
-    this.wrappedIdentity = wrappedIdentity;
-    this.algName = new String((new Buffer(blob)).getString());
-  }
+    override fun getAlgName(): String {
+        return algName
+    }
 
-  public String getAlgName() {
-    return algName;
-  }
+    override fun getPublicKeyBlob(): ByteArray {
+        return wrappedIdentity.blob
+    }
 
-  public byte[] getPublicKeyBlob() {
-    return wrappedIdentity.getBlob();
-  }
-
-  public byte[] sign(byte[] bytes) {
-    return proxy.sign(getPublicKeyBlob(), bytes);
-  }
+    override fun sign(bytes: ByteArray): ByteArray {
+        return proxy.sign(publicKeyBlob, bytes)
+    }
 }

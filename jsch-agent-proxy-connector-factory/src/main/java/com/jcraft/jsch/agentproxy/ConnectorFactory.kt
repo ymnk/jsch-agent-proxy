@@ -37,7 +37,7 @@ abstract class ConnectorFactory {
 
     @Throws(AgentProxyException::class)
     fun createConnector(): Connector {
-        val trials = ArrayList<String>()
+        val trials = ArrayList<Exception>()
         val _connectors = preferredConnectors.split(",".toRegex()).dropLastWhile { it.isEmpty() }
         for (i in _connectors.indices) {
             if (_connectors[i].trim { it <= ' ' } == "pageant") {
@@ -45,7 +45,7 @@ abstract class ConnectorFactory {
                     try {
                         return PageantConnector()
                     } catch (e: AgentProxyException) {
-                        trials.add("pageant")
+                        trials.add(e)
                     }
                 }
             } else if (_connectors[i].trim { it <= ' ' } == "ssh-agent") {
@@ -58,14 +58,14 @@ abstract class ConnectorFactory {
                             val usf: USocketFactory = NCUSocketFactory()
                             return SSHAgentConnector(usf, uSocketPath)
                         } catch (e: AgentProxyException) {
-                            trials.add("ssh-agent:nc")
+                            trials.add(e)
                         }
                     } else if (_usocketFactories[j].trim { it <= ' ' } == "jna") {
                         try {
                             val usf: USocketFactory = JNAUSocketFactory()
                             return SSHAgentConnector(usf, uSocketPath)
                         } catch (e: AgentProxyException) {
-                            trials.add("ssh-agent:jna")
+                            trials.add(e)
                         }
                     }
                 }
@@ -77,7 +77,7 @@ abstract class ConnectorFactory {
             message += foo + trials[i]
             foo = ","
         }
-        throw AgentProxyException(message)
+        throw AgentProxyException(message, null)
     }
 
     internal class Default : ConnectorFactory() {

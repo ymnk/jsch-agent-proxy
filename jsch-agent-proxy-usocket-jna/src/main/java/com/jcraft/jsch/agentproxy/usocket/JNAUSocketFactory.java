@@ -36,9 +36,9 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class JNAUSocketFactory implements USocketFactory {
@@ -57,18 +57,18 @@ public class JNAUSocketFactory implements USocketFactory {
     public short sun_family;
     public byte[] sun_path;
 
-    protected List getFieldOrder() {
-      return Arrays.asList(new String[] { "sun_family", "sun_path" });
+    protected List<String> getFieldOrder() {
+      return List.of("sun_family", "sun_path");
     }
   }
 
   public JNAUSocketFactory() throws AgentProxyException {
   }
 
-  public class MySocket extends Socket {
-    private int sock;
+  public static class MySocket extends Socket {
+    private final int sock;
 
-    public int readFull(byte[] buf, int s, int len) throws IOException {
+    public int readFull(@NotNull byte[] buf, int s, int len) {
       byte[] _buf = buf;
       int _len = len;
       int _s = s;
@@ -90,9 +90,8 @@ public class JNAUSocketFactory implements USocketFactory {
       return len;
     }
 
-    public void write(byte[] buf, int s, int len) throws IOException {
+    public void write(@NotNull byte[] buf, int s, int len) {
       byte[] _buf = buf;
-      int _len = len;
       if(s != 0){
         _buf = new byte[len];
         System.arraycopy(buf, s, _buf, 0, len);
@@ -100,16 +99,17 @@ public class JNAUSocketFactory implements USocketFactory {
       CLibrary.INSTANCE.write(sock, _buf, len);
     }
 
-    MySocket(int sock) throws IOException {
+    MySocket(int sock) {
       this.sock = sock;
     }
 
-    public void close() throws IOException {
+    public void close() {
       CLibrary.INSTANCE.close(sock);
     }
   }
 
-  public Socket open(String path) throws IOException {
+  @NotNull
+  public Socket open(@NotNull String path) throws IOException {
 
     int sock = CLibrary.INSTANCE.socket(1,  // AF_UNIX
                                         1,  // SOCK_STREAM
@@ -119,7 +119,7 @@ public class JNAUSocketFactory implements USocketFactory {
     }
 
     int foo = CLibrary.INSTANCE.fcntl(sock, 2, 8);
-    if(foo < 0){
+    if (foo < 0){
       CLibrary.INSTANCE.close(sock);
       throw new IOException("failed to fctrl usocket: "+foo);
     }
@@ -132,9 +132,8 @@ public class JNAUSocketFactory implements USocketFactory {
                      path.length());
     sockaddr.write();
 
-    foo = 
-      CLibrary.INSTANCE.connect(sock, sockaddr.getPointer(), sockaddr.size());
-    if(foo < 0){
+    foo = CLibrary.INSTANCE.connect(sock, sockaddr.getPointer(), sockaddr.size());
+    if (foo < 0){
       throw new IOException("failed to fctrl usocket: "+foo);
     }
 

@@ -27,4 +27,6 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package com.jcraft.jsch.agentproxy
 
-class AgentProxyException(message: String) : Exception(message)
+class AgentProxyException(
+    message: String, cause: Throwable?
+) : Exception(message, cause)

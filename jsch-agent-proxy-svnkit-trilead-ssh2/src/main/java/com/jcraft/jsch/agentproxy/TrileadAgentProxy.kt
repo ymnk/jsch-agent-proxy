@@ -1,5 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/*
+/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */ /*
 Copyright (c) 2013 ymnk, JCraft,Inc. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -26,26 +25,12 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+package com.jcraft.jsch.agentproxy
 
-package com.jcraft.jsch.agentproxy;
+class TrileadAgentProxy(connector: Connector) : com.trilead.ssh2.auth.AgentProxy {
+    private val agent = AgentProxy(connector)
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-public class TrileadAgentProxy implements com.trilead.ssh2.auth.AgentProxy {
-  private com.jcraft.jsch.agentproxy.AgentProxy agent;
-
-  public TrileadAgentProxy(Connector connector) {
-    this.agent = new AgentProxy(connector);
-  }
-
-  public Collection getIdentities() {
-    Identity[] identities = agent.getIdentities();
-    ArrayList wrapped_identities = new ArrayList(identities.length);
-    for( Identity identity : identities) {
-      wrapped_identities.add(new TrileadAgentIdentity(this.agent, identity));
+    override fun getIdentities(): List<TrileadAgentIdentity> = agent.identities.map {
+        TrileadAgentIdentity(agent, it)
     }
-    return wrapped_identities;
-  }
 }
-
